@@ -1,8 +1,10 @@
 The python based quantum chemistry program.
 
 Currently, only the RHF-based EOM-CCSD program is made and the program is tested with c++ based einsum routine.
-This version moved some permuations into Hbar file, thus the einsum operations are reduced.
+In this version, some permuations needed in sigma vector are done when the Hbar files are generated, thus the number of einsum operation is reduced in the EOM-CCSD iteration.
 
-To run the program, c++ einsum is needed, or change es.c_einsum to numpy.einsum.
+This program needs c++ einsum, or one can simply change 'es.c_einsum' to 'np.einsum' for the use of the conventional einsum routine.
+To run this program, type following in the command line.
+python EOMCCSD.py
 
 The Hbar routine and other examples will be added in future.
