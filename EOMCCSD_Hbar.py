@@ -219,22 +219,29 @@ def get_Hbar_ACES2(EnvVal,lprint):
 
     return F,W,T
 
+def get_tau(T2,T1):
+    tau  = T2 
+    tau += np.einsum('ia,jb->ijab',T1,T1)
+    return
+
+def get_Fvv():
+    # F(ae) = f(ae) - t(am)f(me) + t(fm)<am||ef> - 1/2 tau(afmn)<mn|ef> 
+    # F(ab) = f(ab) - t(ma)f(mb) + t(mf)<am||ef> - tau(mnfa)<mn||fe>    
+    Fvv_aa  = fvv 
+    Fvv_aa -= np.einsum("ma,me->ae",     T1a, fov)
+    Fvv_aa += np.einsum("fm,amef->ae",   Int2_vovv_aa, T1_a)
+#   Fvv_aa += np.einsum("ambe,em->ab",   Int2_vovv_ab, T1_b)
+    Fvv_aa -= np.einsum("mnbf,afmn->ab", Int2_oovv_aa, T2_aa) * 0.5
+#   Fvv_aa -= np.einsum("mnbf,afmn->ab", Int2_oovv_ab, T2_ab)
+
 
 def make_Hbar():
-
+    
     Foo_aa  = np.einsum("je,ei->ji",     H.a.ov,     T.a)
     Foo_aa =+ np.einsum("jmie,em->ji",   H0.aa.ooov, T.a)
     Foo_aa =+ np.einsum("jmie,em->ji",   H0.ab.ooov, T.b)
     Foo_aa =+ np.einsum("jnef,efin->ji", H0.aa.oovv, T.aa) * 0.5
     Foo_aa =+ np.einsum("jnef,efin->ji", H0.ab.oovv, T.ab)
-
-#   F(ab) = f(ab) - t(ma)f(mb) + t(mf)<am||ef> - tau(mnfa)<mn||fe>    
-    Fvv_aa  = Int1_vv_a 
-    Fvv_aa -= np.einsum("mb,am->ab",     Int1_ov_a,    T1_a)
-    Fvv_aa += np.einsum("ambe,em->ab",   Int2_vovv_aa, T1_a)
-    Fvv_aa += np.einsum("ambe,em->ab",   Int2_vovv_ab, T1_b)
-    Fvv_aa -= np.einsum("mnbf,afmn->ab", Int2_oovv_aa, T2_aa) * 0.5
-    Fvv_aa -= np.einsum("mnbf,afmn->ab", Int2_oovv_ab, T2_ab)
 
 
 

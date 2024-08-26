@@ -115,7 +115,7 @@ def driver(EnvVal,F,W):
 
     #initial R
     if (GuessType=='Hdiag'):
-       print('\n * Guess : diagonal approxiation')
+       print('\n * Guess : diagonal approximation')
        Hdiag=make_Hdiag(EnvVal,F)
        idx=Hdiag[:Nov].argsort()[::-1][:Nroot*NGuessSp]
        R = np.eye(Rdim)[:,idx]
