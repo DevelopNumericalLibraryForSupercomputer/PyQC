@@ -1,8 +1,10 @@
 import os
+import sys
 import numpy as np
 import EOMCCSD_Util as util
 import EOMCCSD_Davidson as dav
-import einsum as es
+#sys.path.append("/mnt/c/Ubuntu/Workspace/Code/KISTI/Einsum")
+#import einsum as es
 
 #np.set_printoptions(precision=5)
 
@@ -36,19 +38,19 @@ def HR_Z1(EnvVal,F,W,R):
     ## Hss 
     ## (DFT1INT1/DT1INT1 in ACES2)
     Z1a = 0.0
-    Z1a += es.c_einsum("ae,ie->ia",   Fvv,   R1a)          
-    Z1a -= es.c_einsum("mi,ma->ia",   Foo,   R1a)          
-    Z1a += es.c_einsum("maei,me->ia", Wovvo, R1a)*2.0  
-    Z1a += es.c_einsum("maie,me->ia",-Wovov, R1a)      
+    Z1a += np.einsum("ae,ie->ia",   Fvv,   R1a)          
+    Z1a -= np.einsum("mi,ma->ia",   Foo,   R1a)          
+    Z1a += np.einsum("maei,me->ia", Wovvo, R1a)*2.0  
+    Z1a += np.einsum("maie,me->ia",-Wovov, R1a)      
 
     ## Hsd 
     ## (DT2INT1A/DT2INT1B in ACES2)
-    Z1a += es.c_einsum("me,miea->ia",   Fov,   R2aa)*2.0  #[93]
-    Z1a += es.c_einsum("me,imea->ia",  -Fov,   R2aa)
-    Z1a += es.c_einsum("amef,imef->ia", Wvovv, R2aa)*2.0  #[27] 
-    Z1a += es.c_einsum("amfe,imef->ia",-Wvovv, R2aa)      #[30] 
-    Z1a -= es.c_einsum("mnie,mnae->ia", Wooov, R2aa)*2.0  #[7]  
-    Z1a -= es.c_einsum("nmie,mnae->ia",-Wooov, R2aa)      #[10] 
+    Z1a += np.einsum("me,miea->ia",   Fov,   R2aa)*2.0  #[93]
+    Z1a += np.einsum("me,imea->ia",  -Fov,   R2aa)
+    Z1a += np.einsum("amef,imef->ia", Wvovv, R2aa)*2.0  #[27] 
+    Z1a += np.einsum("amfe,imef->ia",-Wvovv, R2aa)      #[30] 
+    Z1a -= np.einsum("mnie,mnae->ia", Wooov, R2aa)*2.0  #[7]  
+    Z1a -= np.einsum("nmie,mnae->ia",-Wooov, R2aa)      #[10] 
 
 #   util.check_sum('Z1 - final',Z1a,2)
     Z1=Z1a.flatten()
@@ -78,32 +80,32 @@ def HR_Z2(EnvVal,F,W,T,R):
     ## Hds (wo/three-body terms)
     ## (DT1INT2A/DT1INT2B in ACES2)
     Z2aa  = 0.0
-    Z2aa += es.c_einsum("abej,ie->ijab", Wvvvo, R1a) 
-    Z2aa -= es.c_einsum("mbij,ma->ijab", Wovoo, R1a) 
+    Z2aa += np.einsum("abej,ie->ijab", Wvvvo, R1a) 
+    Z2aa -= np.einsum("mbij,ma->ijab", Wovoo, R1a) 
 
     ## Hdd (wo/three-body terms)
     ## (DT2INT2 in ACES2)
-    Z2aa += es.c_einsum("be,ijae->ijab", Fvv, R2aa)
-    Z2aa -= es.c_einsum("mj,imab->ijab", Foo, R2aa) 
-    Z2aa += es.c_einsum("abef,ijef->ijab", Wvvvv, R2aa)*0.5  #[231]
-    Z2aa += es.c_einsum("mnij,mnab->ijab", Woooo, R2aa)*0.5  #[51]
-    Z2aa += es.c_einsum("mbej,imae->ijab", Wovvo, R2aa)*2.0  #[14] 
-    Z2aa += es.c_einsum("mbej,miae->ijab",-Wovvo, R2aa)      #[14]  
-    Z2aa -= es.c_einsum("mbje,miae->ijab", Wovov, R2aa)      #[16]    
-    Z2aa -= es.c_einsum("maje,imeb->ijab", Wovov, R2aa)      #[16] 
+    Z2aa += np.einsum("be,ijae->ijab", Fvv, R2aa)
+    Z2aa -= np.einsum("mj,imab->ijab", Foo, R2aa) 
+    Z2aa += np.einsum("abef,ijef->ijab", Wvvvv, R2aa)*0.5  #[231]
+    Z2aa += np.einsum("mnij,mnab->ijab", Woooo, R2aa)*0.5  #[51]
+    Z2aa += np.einsum("mbej,imae->ijab", Wovvo, R2aa)*2.0  #[14] 
+    Z2aa += np.einsum("mbej,miae->ijab",-Wovvo, R2aa)      #[14]  
+    Z2aa -= np.einsum("mbje,miae->ijab", Wovov, R2aa)      #[16]    
+    Z2aa -= np.einsum("maje,imeb->ijab", Wovov, R2aa)      #[16] 
 
     ## Three body terms in Hds and Hdd
     ## (FORMQ1/GFORMG2 in ACES2)
     Yvv   = 0.0
-    Yvv  += es.c_einsum("bmfe,me->bf",   Wvovv, R1a)*2.0 
-    Yvv  += es.c_einsum("bmef,me->bf",  -Wvovv, R1a)     
-    Yvv  -= es.c_einsum("nmfe,nmbe->bf", Woovv, R2aa)    
-    Z2aa += es.c_einsum("bf,ijaf->ijab", Yvv,   T2aa)    
+    Yvv  += np.einsum("bmfe,me->bf",   Wvovv, R1a)*2.0 
+    Yvv  += np.einsum("bmef,me->bf",  -Wvovv, R1a)     
+    Yvv  -= np.einsum("nmfe,nmbe->bf", Woovv, R2aa)    
+    Z2aa += np.einsum("bf,ijaf->ijab", Yvv,   T2aa)    
     Yoo   = 0.0
-    Yoo  -= es.c_einsum("nmje,me->nj",   Wooov, R1a)*2.0
-    Yoo  -= es.c_einsum("mnje,me->nj",  -Wooov, R1a)    
-    Yoo  -= es.c_einsum("nmef,jmef->nj", Woovv, R2aa)   
-    Z2aa += es.c_einsum("nj,inab->ijab", Yoo,   T2aa)   
+    Yoo  -= np.einsum("nmje,me->nj",   Wooov, R1a)*2.0
+    Yoo  -= np.einsum("mnje,me->nj",  -Wooov, R1a)    
+    Yoo  -= np.einsum("nmef,jmef->nj", Woovv, R2aa)   
+    Z2aa += np.einsum("nj,inab->ijab", Yoo,   T2aa)   
 
 #   util.check_sum('Z2 - final',Z2aa,4)
     ## Some permutations are already applied in Hbar
