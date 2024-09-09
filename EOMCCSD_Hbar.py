@@ -227,13 +227,30 @@ def get_tau(T2,T1):
 def get_Fvv():
     # F(ae) = f(ae) - t(am)f(me) + t(fm)<am||ef> - 1/2 tau(afmn)<mn|ef> 
     # F(ab) = f(ab) - t(ma)f(mb) + t(mf)<am||ef> - tau(mnfa)<mn||fe>    
-    Fvv_aa  = fvv 
-    Fvv_aa -= np.einsum("ma,me->ae",     T1a, fov)
-    Fvv_aa += np.einsum("fm,amef->ae",   Int2_vovv_aa, T1_a)
-#   Fvv_aa += np.einsum("ambe,em->ab",   Int2_vovv_ab, T1_b)
-    Fvv_aa -= np.einsum("mnbf,afmn->ab", Int2_oovv_aa, T2_aa) * 0.5
-#   Fvv_aa -= np.einsum("mnbf,afmn->ab", Int2_oovv_ab, T2_ab)
+    Fvv_aa  = fvv_a 
+    Fvv_aa -= np.einsum("am,me->ae",     T_a, fov_a)
+    Fvv_aa += np.einsum("fm,amef->ae",   T_a, Gvovv_aa)
+    Fvv_aa -= np.einsum("afmn,mnef->ae", Tau_aa, Goovv_aa) * 0.5
+#   Fvv_aa += np.einsum("ambe,em->ab",   Gvovv_ab, T_b)
+#   Fvv_aa -= np.einsum("mnbf,afmn->ab", Goovv_ab, T_ab)
 
+def get_Foo():
+    # F(mi) = f(mi) + t(ei)f(me) + t(en)<mn||ie> + 1/2 tau(efin)<mn|ef> 
+    Foo_aa  = foo_a
+    Foo_aa += np.einsum('ei,me->mi',     T_a, fov_a)
+    Foo_aa += np.einsum('en,mnie->mi',   T_a, Gooov_aa)
+    Foo_aa += np.einsum('efin,mnef->mi', Tau_aa, Goovv_aa)
+    return Foo_aa
+
+def get_Fov(f,G,T):
+    fov_a = f['ov_a']
+    Goovv_aa = G['oovv_aa']
+    T_a = T['a']
+
+    # F(me) = f(me) + t(fn)<mn||ef>
+    Fov_aa  = fov_a 
+    Fov_aa += np.einsum('fn,mnef->me',   T_a, Goovv_aa) 
+    return Fov_aa
 
 def make_Hbar():
     
