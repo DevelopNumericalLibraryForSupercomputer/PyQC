@@ -222,35 +222,64 @@ def get_Hbar_ACES2(EnvVal,lprint):
 def get_tau(T2,T1):
     tau  = T2 
     tau += np.einsum('ia,jb->ijab',T1,T1)
-    return
+    return tau
 
-def get_Fvv():
+def get_Loovv(Goovv):
+    Loovv  = 2.0*Goovv
+    Loovv -= np.einsum("pqrs->pqsr",Goovv)  #swap 3-4
+    return Loovv
+
+def get_Lvovv(Gvovv):
+    Lvovv  = 2.0*Gvovv
+    Lvovv -= np.einsum("pqrs->pqsr",Gvovv)  #swap 3-4
+    return Lvovv
+
+def get_Looov(Gooov):
+    Looov  = 2.0*Gooov
+    Looov -= np.einsum("pqrs->qprs",Gooov)  #swap 1-2
+    return Looov
+
+#def get_permutation
+
+def get_Fvv(fvv,fov,Lvovv,Loovv,T1):
     # F(ae) = f(ae) - t(am)f(me) + t(fm)<am||ef> - 1/2 tau(afmn)<mn|ef> 
-    # F(ab) = f(ab) - t(ma)f(mb) + t(mf)<am||ef> - tau(mnfa)<mn||fe>    
-    Fvv_aa  = fvv_a 
-    Fvv_aa -= np.einsum("am,me->ae",     T_a, fov_a)
-    Fvv_aa += np.einsum("fm,amef->ae",   T_a, Gvovv_aa)
-    Fvv_aa -= np.einsum("afmn,mnef->ae", Tau_aa, Goovv_aa) * 0.5
-#   Fvv_aa += np.einsum("ambe,em->ab",   Gvovv_ab, T_b)
-#   Fvv_aa -= np.einsum("mnbf,afmn->ab", Goovv_ab, T_ab)
+    Fvv  = fvv 
+    Fvv -= np.einsum("ma,me->ae",     T1, fov)
+    Fvv += np.einsum("mf,amef->ae",   T1, Lvovv)
+    Fvv -= np.einsum("mnaf,mnef->ae", Tau, Loovv) 
+    return Fvv
 
-def get_Foo():
+def get_Foo(foo,fov,Looov,Loovv,T1):
     # F(mi) = f(mi) + t(ei)f(me) + t(en)<mn||ie> + 1/2 tau(efin)<mn|ef> 
-    Foo_aa  = foo_a
-    Foo_aa += np.einsum('ei,me->mi',     T_a, fov_a)
-    Foo_aa += np.einsum('en,mnie->mi',   T_a, Gooov_aa)
-    Foo_aa += np.einsum('efin,mnef->mi', Tau_aa, Goovv_aa)
-    return Foo_aa
+    Foo  = foo
+    Foo += np.einsum('ie,me->mi',     T1, fov)
+    Foo += np.einsum('ne,mnie->mi',   T1, Looov)
+    Foo += np.einsum('inef,mnef->mi', Tau, Loovv)
+    return Foo
 
-def get_Fov(f,G,T):
-    fov_a = f['ov_a']
-    Goovv_aa = G['oovv_aa']
-    T_a = T['a']
-
+def get_Fov(fov,Loovv,T1):
     # F(me) = f(me) + t(fn)<mn||ef>
-    Fov_aa  = fov_a 
-    Fov_aa += np.einsum('fn,mnef->me',   T_a, Goovv_aa) 
-    return Fov_aa
+    Fov = fov
+    Fov += np.einsum('nf,mnef->me',   T1, Loovv)
+    return Fov
+
+def get_Woooo():
+    Woooo  = Goooo
+    Woooo += np.einsum('je.mnie->mnij', T1, Gooov)
+    Woooo -= np.einsum('ie.mnje->mnij', T1, Gooov) #P(ij)
+#   Woooo += np.einsum('ie.mnej->mnij', T1, Goovo) #P(ij)
+#   tmp    = np.einsum('je.mnie->mnij', T1, Gooov)
+#   tmp   -= np.einsum('mnij->mnji', tmp)
+    Woooo += np.einsum('ijef,mnef->mnij', Tau, Goovv)
+    return Woooo
+
+def get_Wvvvv():
+    Wvvvv  = Gvvvv
+    Wvvvv -= np.einsum('mb.amef->abef', T1, Gvovv)
+    Wvvvv += np.einsum('ma.bmef->abef', T1, Gvovv) #P(ab)
+    Wvvvv += np.einsum('mnab,mnef->abef', Tau, Goovv)
+    return Wvvvv
+
 
 def make_Hbar():
     
