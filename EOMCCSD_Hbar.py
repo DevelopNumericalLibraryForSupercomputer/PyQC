@@ -263,7 +263,7 @@ def get_Fov(fov,Loovv,T1):
     Fov += np.einsum('nf,mnef->me',   T1, Loovv)
     return Fov
 
-def get_Woooo():
+def get_Woooo(Goooo,Gooov,Goovv,T1,Tau):
     Woooo  = Goooo
     Woooo += np.einsum('je.mnie->mnij', T1, Gooov)
     Woooo -= np.einsum('ie.mnje->mnij', T1, Gooov) #P(ij)
@@ -273,16 +273,26 @@ def get_Woooo():
     Woooo += np.einsum('ijef,mnef->mnij', Tau, Goovv)
     return Woooo
 
-def get_Wvvvv():
+def get_Wvvvv(Gvovv,Goovv,T1,Tau):
     Wvvvv  = Gvvvv
     Wvvvv -= np.einsum('mb.amef->abef', T1, Gvovv)
     Wvvvv += np.einsum('ma.bmef->abef', T1, Gvovv) #P(ab)
     Wvvvv += np.einsum('mnab,mnef->abef', Tau, Goovv)
     return Wvvvv
 
+def get_Wovvo(Govvo,Govvv,Goovo,Goovv):
+    # W(mbej) = <mb||ej> + t(jf)<mb||ef> - t(nb)<mn||ej> - (t(jnfb)+t(jf)t(nb))<mn||ef>
+    Wovvo  = Govvo
+    Wovvo += np.einsum('jf,mbef->mbej', T1, Govvv)
+    Wovvo -= np.einsum('nb,mnej->mbej', T1, Goovo)
+    Wovvo -= np.einsum('jbfb,mnef->mbej', Tau, Goovv)
+    #YCP: do we need one more?
+    return Wovvo
+
+#def get_Wooov():
+    
 
 def make_Hbar():
-    
     Foo_aa  = np.einsum("je,ei->ji",     H.a.ov,     T.a)
     Foo_aa =+ np.einsum("jmie,em->ji",   H0.aa.ooov, T.a)
     Foo_aa =+ np.einsum("jmie,em->ji",   H0.ab.ooov, T.b)
