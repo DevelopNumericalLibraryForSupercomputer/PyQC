@@ -194,7 +194,7 @@ def get_Looov(Gooov):
 
 
 def get_Fvv(fvv,fov,Lvovv,Loovv,T1,Tau):
-    # (Eq.25) F(ae) = f(ae) - t(ma)f(me) + t(mf)<ma||fb> - tau(mnae)<mn|be> 
+    # F(ae) = f(ae) - t(ma)f(me) + t(mf)<ma||fe> - tau(mnaf)<mn|ef> 
     Fvv  = fvv 
     Fvv -= np.einsum("ma,me->ae",     T1, fov)
     Fvv += np.einsum("mf,amef->ae",   T1, Lvovv)
@@ -202,7 +202,7 @@ def get_Fvv(fvv,fov,Lvovv,Loovv,T1,Tau):
     return Fvv
 
 def get_Foo(foo,fov,Looov,Loovv,T1):
-    # (Eq.26) F(mi) = f(mi) + t(ei)f(me) + t(en)<mn||ie> + 1/2 tau(efin)<mn|ef> 
+    # F(mi) = f(mi) + t(ei)f(me) + t(en)<mn||ie> + 1/2 tau(inef)<mn|ef> 
     Foo  = foo
     Foo += np.einsum('ie,me->mi',     T1, fov)
     Foo += np.einsum('ne,mnie->mi',   T1, Looov)
@@ -216,41 +216,64 @@ def get_Fov(fov,Loovv,T1):
     return Fov
 
 def get_Woooo(Goooo,Gooov,Goovv,T1,Tau):
-    Woooo  = Goooo
+    Woooo  = Goooo  #G(mnij)
     Woooo += np.einsum('je.mnie->mnij', T1, Gooov)
-    Woooo -= np.einsum('ie.mnje->mnij', T1, Gooov) #P(ij)
-#   Woooo += np.einsum('ie.mnej->mnij', T1, Goovo) #P(ij)
-#   tmp    = np.einsum('je.mnie->mnij', T1, Gooov)
-#   tmp   -= np.einsum('mnij->mnji', tmp)
+    Woooo += np.einsum('ie.mnej->mnij', T1, Gooov) 
     Woooo += np.einsum('ijef,mnef->mnij', Tau, Goovv)
     return Woooo
 
 def get_Wvvvv(Gvovv,Goovv,T1,Tau):
-    Wvvvv  = Gvvvv
+    Wvvvv  = Gvvvv  #G(abef)
     Wvvvv -= np.einsum('mb.amef->abef', T1, Gvovv)
-    Wvvvv += np.einsum('ma.bmef->abef', T1, Gvovv) #P(ab)
+    Wvvvv -= np.einsum('ma.bmfe->abef', T1, Gvovv) 
     Wvvvv += np.einsum('mnab,mnef->abef', Tau, Goovv)
     return Wvvvv
 
 def get_Wovvo(Govvo,Govvv,Goovo,Goovv):
     # W(mbej) = <mb||ej> + t(jf)<mb||ef> - t(nb)<mn||ej> - (t(jnfb)+t(jf)t(nb))<mn||ef>
-    Wovvo  = Govvo
+    Wovvo  = Govvo  #G(mbej)
     Wovvo += np.einsum('jf,mbef->mbej', T1, Govvv)
     Wovvo -= np.einsum('nb,mnej->mbej', T1, Goovo)
-    Wovvo -= np.einsum('jbfb,mnef->mbej', Tau, Goovv)
-    #YCP: do we need one more?
+    Wovvo -= np.einsum('jnfb,mnef->mbej', Tau, Goovv)
+    Wovvo += np.einsum('njfb,mnef->mbej', T2, Goovv)
     return Wovvo
 
-#def get_Wooov():
+def get_Wovov(Wovvo):
+    # W(mbje) = -W(mbej)
+    return -Wovvo.swapaxes(2,3) 
+ 
+def get_Wooov():
+    Wooov  = Gooov  #G(mnie)
+    Wooov += np.einsum('if,mnfe->mnie', T1, Goovv)
+
+def get_Wvovv():
+    Wooov  = Gooov  #G(amef)
+    Wooov += np.einsum('na,nmef->amef', T1, Goovv)
+
+def get_Wovoo():
+    Wovoo  = Govoo  #G(mbij)
+    Wovoo += np.einsum('ijeb,me->mbij', T2, Fov)
+    Wovoo -= np.einsum('nb,mnij->mbij', T2, Woooo)
+    Wovoo += np.einsum('ijef,mbef->mbij', T2, Govvv)
+
+    Wovoo += np.einsum('jnbe,mnie->mbij', T2, Looov)  #P(ij)t(jnbe)<mn||ie>
+    Wovoo -= np.einsum('njbe,mnie->mbij', T2, Gooov)  
+    Wovoo -= np.einsum('ineb,mnej->mbij', T2, Gooov)
+
+    Wovoo += np.einsum('ie,mbej->mbij',T1, Govov)     #P(ij)t(ie)<mb||ej>
+    Wovoo += np.einsum('je,mbie->mbij',T1, Govov)
+
+    tmp    = np.einsum('njbf,mnef->mbej',T2, Goovv)   #P(ij)t(ie){...}
+    tmp   -= np.einsum('jnbf,mnef->mbej',T2, Goovv)
+    Wovoo += np.einsum('ie,mbej->mbij',T1, tmp)
+    tmp    = np.einsum('infb,mnfe->mbie',T2, Goovv)
+    Wovoo += np.einsum('je,mbie->mbij',T1, tmp)
+
+def get_Wvvvo():
     
 
 def make_Hbar():
-    Foo_aa  = np.einsum("je,ei->ji",     H.a.ov,     T.a)
-    Foo_aa =+ np.einsum("jmie,em->ji",   H0.aa.ooov, T.a)
-    Foo_aa =+ np.einsum("jmie,em->ji",   H0.ab.ooov, T.b)
-    Foo_aa =+ np.einsum("jnef,efin->ji", H0.aa.oovv, T.aa) * 0.5
-    Foo_aa =+ np.einsum("jnef,efin->ji", H0.ab.oovv, T.ab)
-
+    # make Hbar 
 
 
 
