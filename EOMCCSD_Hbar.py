@@ -144,63 +144,14 @@ def get_Hbar_ACES2(EnvVal,lprint):
 
     F={}
     print('here')
-    F['oo_aa']=ap.get_Vec2D(Nocc,Nvrt,'Foo_aa',lprint)
-    F['oo_bb']=ap.get_Vec2D(Nocc,Nvrt,'Foo_bb',lprint)
-    F['vv_aa']=ap.get_Vec2D(Nocc,Nvrt,'Fvv_aa',lprint)
-    F['vv_bb']=ap.get_Vec2D(Nocc,Nvrt,'Fvv_bb',lprint)
-    F['ov_aa']=ap.get_Vec2D(Nocc,Nvrt,'Fov_aa',lprint)
-    F['ov_bb']=ap.get_Vec2D(Nocc,Nvrt,'Fov_bb',lprint)
-
-    W={}
-    # H(MN,IJ) OOOO
-    W['oooo_aaaa']=ap.get_Vec4D(Nocc,Nvrt,'Woooo_aaaa',lprint) #[51] (M<N I<J)
-    W['oooo_bbbb']=ap.get_Vec4D(Nocc,Nvrt,'Woooo_bbbb',lprint) #[52] (m<n i<j)
-    W['oooo_abab']=ap.get_Vec4D(Nocc,Nvrt,'Woooo_abab',lprint) #[53] (M,n I,j)
-                                                     
-    # H(AI,BC) VOVV                         
-    W['vovv_aaaa']=ap.get_Vec4D(Nocc,Nvrt,'Wvovv_aaaa',lprint) #[27] (A<B C,I)
-    W['vovv_bbbb']=ap.get_Vec4D(Nocc,Nvrt,'Wvovv_bbbb',lprint) #[28] (a<b c,i)
-    W['vovv_abab']=ap.get_Vec4D(Nocc,Nvrt,'Wovvv_abab',lprint) #[29] (A,b I,c)
-    W['vovv_abba']=ap.get_Vec4D(Nocc,Nvrt,'Wvovv_abab',lprint) #[30] (A,b C,i)
-                                                     
-    # H(IJ,KA)                         
-    W['vooo_aaaa']=ap.get_Vec4D(Nocc,Nvrt,'Wvooo_aaaa',lprint) #
-    W['vooo_bbbb']=ap.get_Vec4D(Nocc,Nvrt,'Wvooo_bbbb',lprint)
-    W['vooo_abab']=ap.get_Vec4D(Nocc,Nvrt,'Wvooo_abab',lprint)
-    W['vooo_abba']=ap.get_Vec4D(Nocc,Nvrt,'Wvooo_abba',lprint)
-                                                     
-    # H(MB,EJ)                        
-    W['ovvo_aaaa']=ap.get_Vec4D(Nocc,Nvrt,'Wovvo_aaaa',lprint)
-    W['ovvo_bbbb']=ap.get_Vec4D(Nocc,Nvrt,'Wovvo_bbbb',lprint)
-    W['ovvo_aabb']=ap.get_Vec4D(Nocc,Nvrt,'Wovvo_aabb',lprint)
-    W['ovvo_bbaa']=ap.get_Vec4D(Nocc,Nvrt,'Wovvo_bbaa',lprint)
-    W['ovvo_abab']=ap.get_Vec4D(Nocc,Nvrt,'Wovvo_abab',lprint)
-    W['ovvo_abba']=ap.get_Vec4D(Nocc,Nvrt,'Wovvo_baba',lprint)
-                                                     
-    # H(AB,CI)                       
-    W['ovvv_aaaa']=ap.get_Vec4D(Nocc,Nvrt,'Wovvv_aaaa',lprint)
-    W['ovvv_bbbb']=ap.get_Vec4D(Nocc,Nvrt,'Wovvv_bbbb',lprint)
-    W['ovvv_abab']=ap.get_Vec4D(Nocc,Nvrt,'Wovvv_abab',lprint)
-    W['ovvv_abba']=ap.get_Vec4D(Nocc,Nvrt,'Wovvv_abba',lprint)
-                                                     
-    # H(IA,JK)                      
-    W['oovo_aaaa']=ap.get_Vec4D(Nocc,Nvrt,'Woovo_aaaa',lprint)
-    W['oovo_bbbb']=ap.get_Vec4D(Nocc,Nvrt,'Woovo_bbbb',lprint)
-    W['oovo_abab']=ap.get_Vec4D(Nocc,Nvrt,'Woovo_abab',lprint)
-    W['oovo_abba']=ap.get_Vec4D(Nocc,Nvrt,'Woovo_abba',lprint)
-                                                     
-    # H(AB,CD)                     
-    W['vvvv_aaaa']=ap.get_Vec4D(Nocc,Nvrt,'Wvvvv_aaaa',lprint)
-    W['vvvv_bbbb']=ap.get_Vec4D(Nocc,Nvrt,'Wvvvv_bbbb',lprint)
-    W['vvvv_abab']=ap.get_Vec4D(Nocc,Nvrt,'Wvvvv_abab',lprint)
+    F['oo']=ap.get_Vec2D(Nocc,Nvrt,'Foo',lprint)
+    F['vv']=ap.get_Vec2D(Nocc,Nvrt,'Fvv',lprint)
+    F['ov']=ap.get_Vec2D(Nocc,Nvrt,'Fov',lprint)
 
     # T2                     
     T={}
-    T['ovov_aaaa']=ap.get_Vec4D(Nocc,Nvrt,'Tovov_aaaa',lprint)
-    T['ovov_bbbb']=ap.get_Vec4D(Nocc,Nvrt,'Tovov_bbbb',lprint)
-    T['ovov_aabb']=ap.get_Vec4D(Nocc,Nvrt,'Tovov_aabb',lprint)
-    T['ovov_bbaa']=ap.get_Vec4D(Nocc,Nvrt,'Tovov_bbaa',lprint)
-
+    T['ov']=ap.get_Vec2D(Nocc,Nvrt,'Tov',lprint)
+    T['ovov']=ap.get_Vec4D(Nocc,Nvrt,'Tovov',lprint)
     
 
     AddDiag=True
@@ -220,6 +171,8 @@ def get_Hbar_ACES2(EnvVal,lprint):
     return F,W,T
 
 def get_tau(T2,T1):
+    # Tau(RHF) = T2 + T1*T1
+    # TildeTau(RHF)+0.5*T1*T1 = (T2 + 0.5*T1*T1) + (0.5*T1*T1) = Tau(RHF)
     tau  = T2 
     tau += np.einsum('ia,jb->ijab',T1,T1)
     return tau
@@ -239,10 +192,9 @@ def get_Looov(Gooov):
     Looov -= np.einsum("pqrs->qprs",Gooov)  #swap 1-2
     return Looov
 
-#def get_permutation
 
-def get_Fvv(fvv,fov,Lvovv,Loovv,T1):
-    # F(ae) = f(ae) - t(am)f(me) + t(fm)<am||ef> - 1/2 tau(afmn)<mn|ef> 
+def get_Fvv(fvv,fov,Lvovv,Loovv,T1,Tau):
+    # (Eq.25) F(ae) = f(ae) - t(ma)f(me) + t(mf)<ma||fb> - tau(mnae)<mn|be> 
     Fvv  = fvv 
     Fvv -= np.einsum("ma,me->ae",     T1, fov)
     Fvv += np.einsum("mf,amef->ae",   T1, Lvovv)
@@ -250,7 +202,7 @@ def get_Fvv(fvv,fov,Lvovv,Loovv,T1):
     return Fvv
 
 def get_Foo(foo,fov,Looov,Loovv,T1):
-    # F(mi) = f(mi) + t(ei)f(me) + t(en)<mn||ie> + 1/2 tau(efin)<mn|ef> 
+    # (Eq.26) F(mi) = f(mi) + t(ei)f(me) + t(en)<mn||ie> + 1/2 tau(efin)<mn|ef> 
     Foo  = foo
     Foo += np.einsum('ie,me->mi',     T1, fov)
     Foo += np.einsum('ne,mnie->mi',   T1, Looov)

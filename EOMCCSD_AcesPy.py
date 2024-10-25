@@ -199,10 +199,44 @@ def get_Vec4D(Nocc,Nvrt,String,lprint):
     return Mat
 
 
-def get_Tamp(Nocc,Nvrt,String,lprint):
+def get_T(Nocc,Nvrt,String,lprint):
     import aces2py as a2
-
     print(String)
+
+def get_F(Nocc,Nvrt,String,lprint):
+    import aces2py as a2
+    print(String)
+
+def get_2dVec(String,iList,idx,Nocc,Nvrt):
+#   -------------------------------------
+#   Get the size of raw and final tensors
+#   -------------------------------------
+    print('\n * '+String+' : '+str(iList)+' -> '+idx)
+    dim=np.zeros(2)
+    idx1=idx[:2]
+    idx2=idx[2:4]
+
+    if idx1=='oo': dim[0]=Nocc; dim[1]=Nocc; RawDim1=Nocc*Nocc
+    if idx1=='vv': dim[0]=Nvrt; dim[1]=Nvrt; RawDim1=Nvrt*Nvrt
+    if idx1=='ov': dim[0]=Nocc; dim[1]=Nvrt; RawDim1=Nocc*Nvrt
+    if idx1=='vo': dim[0]=Nvrt; dim[1]=Nocc; RawDim1=Nvrt*Nocc
+
+    if idx2=='aa': ispin=1
+    if idx2=='bb': ispin=2
+
+    dim=dim.astype(int)
+    RawDim=int(RawDim1)
+#   print('RawDim = '+str(RawDim))
+
+#   ------------------
+#   Read F from AcesPy
+#   ------------------
+    Irrep=1
+    RawMat=np.zeros(RawDim)
+    a2.getlstpy(1,1,Irrep,ispin,iList,RawMat,RawDim)
+    print('* Read '+String+' from AcesPy(getlstpy). RawDim='+str(RawDim))
+    Mat=RawMat.reshape(dim[0],dim[1])
+    return Mat,dim
 
 
 def get_CIS_vector(Nocc,Nvrt):
