@@ -273,12 +273,23 @@ def get_Wovoo(Govoo):
 
 def get_Wvvvo():
     Wvvvo  = Gvvvo  #G(abei)
-    Wvvvo -= np.einsum('miab,me->abei',T2, Fov)      #t(miab)F(me)
-    Wvvvo += np.einsum('if,abef->abei',T1, Wvvvv)    #t(if)W(abef)
-    Wvvvo += np.einsum('mnab,mnei->abei',Tau, Goovo) #tau(mnab)<mn|ei>
-     
-    Wvvvo -= np.einsum('miaf') 
-    Wvvvo 
+    Wvvvo -= np.einsum('miab,me->abei',T2, Fov)       #t(miab)F(me)
+    Wvvvo += np.einsum('if,abef->abei',T1, Wvvvv)     #t(if)W(abef)
+    Wvvvo += np.einsum('mnab,mnei->abei',Tau, Goovo)  #tau(mnab)<mn|ei>
+                                                      
+    Wvvvo -= np.einsum('miaf,mbef->abei',T2, Wovvv)   #P(ab)t(miaf)<mb||ef>
+    Wvvvo -= np.einsum('mibf,amef->abei',T2. Wvovv) 
+    Wvvvo += np.einsum('imbf,amef->abei',T2. Wvovv) 
+
+    Wvvvo -= np.einsum('ma,mbei->abei',T1, Wovvo)     #P(ab)t(ma)<mb||ei>
+    Wvvvo -= np.einsum('mb,amei->abei',T1, Wvovo)
+
+    tmp    = np.einsum('nibf,mnef->mbei',T2, Woovv)   #P(ab)t(ma)t(nibf)<mn||ef>
+    tmp   -= np.einsum('inbf,mnef->mbei',T2, Woovv)
+    Wvvvo += np.einsum('ma,mbei->abei',T1, tmp)
+    tmp    = np.einsum('niaf,nmef->amei',T2, Woovv)
+    Wvvvo  = np.einsum('mb,amei->abei',T1, tmp)
+    return Wvvvo
 
 def make_Hbar():
     # make Hbar 

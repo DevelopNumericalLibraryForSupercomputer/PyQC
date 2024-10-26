@@ -180,6 +180,8 @@ def get_Vec4D(Nocc,Nvrt,String,lprint):
     if (String=='Tovov_aabb'):  ind=36;  
     if (String=='Tovov_bbaa'):  ind=37;  
 
+    if (String=='Tvvoo'):
+
     if (ind==0):
        print('Error, String is not right! '+String)
 
