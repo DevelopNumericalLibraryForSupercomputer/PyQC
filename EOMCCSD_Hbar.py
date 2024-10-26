@@ -242,19 +242,20 @@ def get_Wovov(Wovvo):
     # W(mbje) = -W(mbej)
     return -Wovvo.swapaxes(2,3) 
  
-def get_Wooov():
+def get_Wooov(Gooov,Goovv,T1):
     Wooov  = Gooov  #G(mnie)
     Wooov += np.einsum('if,mnfe->mnie', T1, Goovv)
 
 def get_Wvovv():
-    Wooov  = Gooov  #G(amef)
-    Wooov += np.einsum('na,nmef->amef', T1, Goovv)
+    Wvovv  = Gvovv  #G(amef)
+    Wvovv += np.einsum('na,nmef->amef', T1, Goovv)
+    return Wvovv
 
-def get_Wovoo():
+def get_Wovoo(Govoo):
     Wovoo  = Govoo  #G(mbij)
     Wovoo += np.einsum('ijeb,me->mbij', T2, Fov)
     Wovoo -= np.einsum('nb,mnij->mbij', T2, Woooo)
-    Wovoo += np.einsum('ijef,mbef->mbij', T2, Govvv)
+    Wovoo += np.einsum('ijef,mbef->mbij', Tau, Govvv)
 
     Wovoo += np.einsum('jnbe,mnie->mbij', T2, Looov)  #P(ij)t(jnbe)<mn||ie>
     Wovoo -= np.einsum('njbe,mnie->mbij', T2, Gooov)  
@@ -268,9 +269,16 @@ def get_Wovoo():
     Wovoo += np.einsum('ie,mbej->mbij',T1, tmp)
     tmp    = np.einsum('infb,mnfe->mbie',T2, Goovv)
     Wovoo += np.einsum('je,mbie->mbij',T1, tmp)
+    return Wovoo
 
 def get_Wvvvo():
-    
+    Wvvvo  = Gvvvo  #G(abei)
+    Wvvvo -= np.einsum('miab,me->abei',T2, Fov)      #t(miab)F(me)
+    Wvvvo += np.einsum('if,abef->abei',T1, Wvvvv)    #t(if)W(abef)
+    Wvvvo += np.einsum('mnab,mnei->abei',Tau, Goovo) #tau(mnab)<mn|ei>
+     
+    Wvvvo -= np.einsum('miaf') 
+    Wvvvo 
 
 def make_Hbar():
     # make Hbar 
