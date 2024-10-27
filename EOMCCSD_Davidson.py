@@ -1,16 +1,16 @@
 import os
 import numpy as np
-import EOMCCSD_Util as util
+import Base_Util as util
 import EOMCCSD_Sigma as sig
 
 def Diag_Davidson(EnvVal,F,W,T,R):
-    Nocc=EnvVal['Nocc']
-    Nvrt=EnvVal['Nvrt']
-    RefOrb=EnvVal['RefOrb']
-    MaxIter=EnvVal['MaxIter']
-    Nroot=EnvVal['Nroot']  #for now, Nroot=1
-    EngTol=EnvVal['EngTol']
-    DavSubSpDim=EnvVal['DavSubSpDim'] #Maximum subspace dimension
+    Nocc=EnvVal['NOCC']
+    Nvrt=EnvVal['NVRT']
+    RefOrb=EnvVal['REF_ORB']
+    MaxIter=EnvVal['NMAXITER']
+    Nroot=EnvVal['NROOT']  #for now, Nroot=1
+    EngTol=EnvVal['VTOL_ENG']
+    DavSubSpDim=EnvVal['NDIM_SUBSP'] #Maximum subspace dimension
     Nov=Nocc*Nvrt
     DimR=Nov+Nov*Nov
     NGuessSp=2
@@ -56,7 +56,7 @@ def Diag_Davidson(EnvVal,F,W,T,R):
         if (dE < EngTol) and (Iter>1): 
            print('\n * EOM-CCSD Converged')
            for i in range(Nroot):
-               print('Energy for the state %d = %.10f ' % (i+1,Eng[i]))
+               print(' - Energy for the state %d = %.10f ' % (i+1,Eng[i]))
            return
         else:   
            if DimG >= DavSubSpDim:

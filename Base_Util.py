@@ -3,9 +3,9 @@ import numpy as np
 
 def make_header(string):
     nstr=len(string)+4
-    print('\n'+('='*nstr))
-    print('  '+string+'  ')
-    print(('='*nstr)+'\n')
+    print('\n'+(' '*3) + ('='*nstr))
+    print((' '*5) + string + '  ')
+    print((' '*3) + ('='*nstr) +'\n')
     return
 
 
@@ -37,11 +37,11 @@ def write_data(String,mat,dim,lwrite):
                        f.write("%7d  %7d  %7d  %7d  %15.7f\n" % (i0,i1,i2,i3,mat[i0,i1,i2,i3]))
     f.close()
 
-def read_data(String,lread):
-    if (lread==False):
-       return
-    fout='Data/Data-'+String+'.txt'
+def read_data(String,EnvVal):
+    DataDir=EnvVal['DATA_DIR']
+    fout=DataDir+'/Data-'+String+'.txt'
     #print(' - '+fout)
+
     f=open(fout,'r')
     tmp=f.readline().split()
     dim=[]
@@ -70,10 +70,10 @@ def read_data(String,lread):
 
 
 def read_data2(String,lread):
-    if (lread==False):
-       return
-    fout='Data/Data-'+String+'.txt'
+    DataDir=EnvVal['DATA_DIR']
+    fout=DataDir+'/Data-'+String+'.txt'
     #print(' - '+fout)
+
     f=open(fout,'r')
     tmp=f.readline().split()
     dim=[]

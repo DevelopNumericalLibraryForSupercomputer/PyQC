@@ -1,6 +1,6 @@
 import sys
 import numpy as np
-import EOMCCSD_Util as util
+import Base_Util as util
 
 
 def read_mol_info(EnvVal):
@@ -26,10 +26,10 @@ def read_mol_info(EnvVal):
 
     Nvrt=Nbas-Nocc
 
-    EnvVal['Irrep']=Irrep
-    EnvVal['Nbas']=Nbas
-    EnvVal['Nocc']=Nocc
-    EnvVal['Nvrt']=Nvrt
+    EnvVal['NIRREP']=Irrep
+    EnvVal['NBAS']=Nbas
+    EnvVal['NOCC']=Nocc
+    EnvVal['NVRT']=Nvrt
 
     return EnvVal
 
@@ -180,7 +180,7 @@ def get_Vec4D(Nocc,Nvrt,String,lprint):
     if (String=='Tovov_aabb'):  ind=36;  
     if (String=='Tovov_bbaa'):  ind=37;  
 
-    if (String=='Tvvoo'):
+#   if (String=='Tvvoo'):
 
     if (ind==0):
        print('Error, String is not right! '+String)

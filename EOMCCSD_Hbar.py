@@ -1,10 +1,10 @@
 import numpy as np
 import os
-import EOMCCSD_Util as util
+import Base_Util as util
 import EOMCCSD_AcesPy as ap
 
 def get_Hbar(EnvVal,lprint):
-    HbarType=EnvVal['HbarType']
+    HbarType=EnvVal['HBAR_TYPE']
 
     if HbarType=='ACES2':
        F,W,T=get_Hbar_ACES2(EnvVal,lprint)
@@ -15,104 +15,101 @@ def get_Hbar(EnvVal,lprint):
     return F,W,T
 
 def get_Hbar_file2(EnvVal):
-    print('\n * Getting Hbar fron file')
-    Nocc=EnvVal['Nocc']
-    Nvrt=EnvVal['Nvrt']
-
-    lread=True
+    print('\n * Getting Hbar from file')
+    Nocc=EnvVal['NOCC']
+    Nvrt=EnvVal['NVRT']
+    
 
     F={}
     W={}
     T={}
 
-    T['2aa']=util.read_data('T2',lread)
+    T['2aa']=util.read_data('T2',EnvVal)
 
-    F['oo']=util.read_data('Foo',lread)
-    F['vv']=util.read_data('Fvv',lread)
-    F['ov']=util.read_data('Fov',lread)
+    F['oo']=util.read_data('Foo',EnvVal)
+    F['vv']=util.read_data('Fvv',EnvVal)
+    F['ov']=util.read_data('Fov',EnvVal)
 
-    W['ovoo'] = util.read_data('Wovoo',lread) # [110] * ovoo 
-    W['ooov'] = util.read_data('Wooov',lread) # [10] * ooov 
-    W['vovv'] = util.read_data('Wvovv',lread) # [30] * vovv 
-    W['oooo'] = util.read_data('Woooo',lread) # [53] * oooo 
-    W['ovov'] = util.read_data('Wovov',lread) # [54] * ovov 
-    W['ovvo'] = util.read_data('Wovvo',lread) # [56] * ovvo 
-    W['vvvv'] = util.read_data('Wvvvv',lread) # [233] * vvvv
-    W['oovv'] = util.read_data('Woovv',lread) # [?] * oovv
-    W['vvvo'] = util.read_data('Wvvvo',lread) # [?] * vvvo
+    W['ovoo'] = util.read_data('Wovoo',EnvVal) # [110] * ovoo 
+    W['ooov'] = util.read_data('Wooov',EnvVal) # [10] * ooov 
+    W['vovv'] = util.read_data('Wvovv',EnvVal) # [30] * vovv 
+    W['oooo'] = util.read_data('Woooo',EnvVal) # [53] * oooo 
+    W['ovov'] = util.read_data('Wovov',EnvVal) # [54] * ovov 
+    W['ovvo'] = util.read_data('Wovvo',EnvVal) # [56] * ovvo 
+    W['vvvv'] = util.read_data('Wvvvv',EnvVal) # [233] * vvvv
+    W['oovv'] = util.read_data('Woovv',EnvVal) # [?] * oovv
+    W['vvvo'] = util.read_data('Wvvvo',EnvVal) # [?] * vvvo
 
     return F,W,T
 
 def get_Hbar_file(EnvVal):
-    print('\n * Getting Hbar fron file')
-    Nocc=EnvVal['Nocc']
-    Nvrt=EnvVal['Nvrt']
-
-    lread=True
+    print('\n * Getting Hbar from file')
+    Nocc=EnvVal['NOCC']
+    Nvrt=EnvVal['NVRT']
 
     F={}
     W={}
     T={}
 
-    F['oo_aa']=util.read_data('Foo_aa',lread)
-    F['oo_bb']=util.read_data('Foo_bb',lread)
-    F['vv_aa']=util.read_data('Fvv_aa',lread)
-    F['vv_bb']=util.read_data('Fvv_bb',lread)
-    F['vo_aa']=util.read_data('Fvo_aa',lread)
-    F['vo_bb']=util.read_data('Fvo_bb',lread)
+    F['oo_aa']=util.read_data('Foo_aa',EnvVal)
+    F['oo_bb']=util.read_data('Foo_bb',EnvVal)
+    F['vv_aa']=util.read_data('Fvv_aa',EnvVal)
+    F['vv_bb']=util.read_data('Fvv_bb',EnvVal)
+    F['vo_aa']=util.read_data('Fvo_aa',EnvVal)
+    F['vo_bb']=util.read_data('Fvo_bb',EnvVal)
 
     # H(IJ,KA)
-    W['5ooov_aaaa'] = util.read_data2('Wooov_aaaa',lread) #[7]   W(IJKA) 
-    W['5ooov_bbbb'] = util.read_data2('Wooov_bbbb',lread) #[8]   W(ijka) 
-    W['5oovo_abab'] = util.read_data2('Wooov_abba',lread) #[9]   W(IjAk) *
-    W['5ooov_abab'] = util.read_data2('Wooov_abab',lread) #[10]  W(IjKa) 
+    W['5ooov_aaaa'] = util.read_data2('Wooov_aaaa',EnvVal) #[7]   W(IJKA) 
+    W['5ooov_bbbb'] = util.read_data2('Wooov_bbbb',EnvVal) #[8]   W(ijka) 
+    W['5oovo_abab'] = util.read_data2('Wooov_abba',EnvVal) #[9]   W(IjAk) *
+    W['5ooov_abab'] = util.read_data2('Wooov_abab',EnvVal) #[10]  W(IjKa) 
 
     # H(IJ,AB)                                                 
-    W['4vvoo_aaaa'] = util.read_data2('Woovv_aaaa',lread) #[14]  W(IJAB) << ABIJ
-    W['4vvoo_bbbb'] = util.read_data2('Woovv_bbbb',lread) #[15]  W(ijab) << abij
-    W['4vvoo_abab'] = util.read_data2('Woovv_abab',lread) #[16]  W(IjAb) << AbIj
+    W['4vvoo_aaaa'] = util.read_data2('Woovv_aaaa',EnvVal) #[14]  W(IJAB) << ABIJ
+    W['4vvoo_bbbb'] = util.read_data2('Woovv_bbbb',EnvVal) #[15]  W(ijab) << abij
+    W['4vvoo_abab'] = util.read_data2('Woovv_abab',EnvVal) #[16]  W(IjAb) << AbIj
                                                                
     # H(AI,BC) #FI X ME ordering H(CI,AB)?                     
-    W['5vvvo_aaaa'] = util.read_data2('Wvovv_aaaa',lread) #[27]  W(ABCI)
-    W['5vvvo_bbbb'] = util.read_data2('Wvovv_bbbb',lread) #[28]  W(abci)
-    W['5vvov_abab'] = util.read_data2('Wvovv_baab',lread) #[29]  W(AbIc) *
-    W['5vvvo_abab'] = util.read_data2('Wvovv_abab',lread) #[30]  W(AbCi)
+    W['5vvvo_aaaa'] = util.read_data2('Wvovv_aaaa',EnvVal) #[27]  W(ABCI)
+    W['5vvvo_bbbb'] = util.read_data2('Wvovv_bbbb',EnvVal) #[28]  W(abci)
+    W['5vvov_abab'] = util.read_data2('Wvovv_baab',EnvVal) #[29]  W(AbIc) *
+    W['5vvvo_abab'] = util.read_data2('Wvovv_abab',EnvVal) #[30]  W(AbCi)
                                                                
     # H(MN,IJ)                                                 
-    W['4oooo_aaaa'] = util.read_data2('Woooo_aaaa',lread) #[51]  W(MNIJ) <- MNIJ
-    W['4oooo_bbbb'] = util.read_data2('Woooo_bbbb',lread) #[52]  W(mnij) <- mnij
-    W['4oooo_abab'] = util.read_data2('Woooo_abab',lread) #[53]  W(MnIj) <- MnIj 
+    W['4oooo_aaaa'] = util.read_data2('Woooo_aaaa',EnvVal) #[51]  W(MNIJ) <- MNIJ
+    W['4oooo_bbbb'] = util.read_data2('Woooo_bbbb',EnvVal) #[52]  W(mnij) <- mnij
+    W['4oooo_abab'] = util.read_data2('Woooo_abab',EnvVal) #[53]  W(MnIj) <- MnIj 
                                                                
     # H(MB,JE)                                                 
-    W['1vovo_aaaa'] = util.read_data2('Wovov_aaaa',lread) #[54]  W(MBJE) << EMBJ
-    W['1vovo_bbbb'] = util.read_data2('Wovov_bbbb',lread) #[55]  W(mbje) << embj
-    W['1vovo_aabb'] = util.read_data2('Wovov_abba',lread) #[56]  W(EMAI) << EMBJ
-    W['1vovo_bbaa'] = util.read_data2('Wovov_baab',lread) #[57]  W(emAI) << emBJ [*]
-    W['4vovo_abab'] = util.read_data2('Wovov_baba',lread) #[58]  W(mBjE) << EmBj
-    W['4vovo_baba'] = util.read_data2('Wovov_abab',lread) #[59]  W(MbJe) << eMbJ
+    W['1vovo_aaaa'] = util.read_data2('Wovov_aaaa',EnvVal) #[54]  W(MBJE) << EMBJ
+    W['1vovo_bbbb'] = util.read_data2('Wovov_bbbb',EnvVal) #[55]  W(mbje) << embj
+    W['1vovo_aabb'] = util.read_data2('Wovov_abba',EnvVal) #[56]  W(EMAI) << EMBJ
+    W['1vovo_bbaa'] = util.read_data2('Wovov_baab',EnvVal) #[57]  W(emAI) << emBJ [*]
+    W['4vovo_abab'] = util.read_data2('Wovov_baba',EnvVal) #[58]  W(mBjE) << EmBj
+    W['4vovo_baba'] = util.read_data2('Wovov_abab',EnvVal) #[59]  W(MbJe) << eMbJ
 
     # H(IA,JK) or H(KA,IJ)
-    W['3ooov_aaaa'] = util.read_data2('Wovoo_aaaa',lread) #[107]  W(IJKA) 
-    W['3ooov_bbbb'] = util.read_data2('Wovoo_bbbb',lread) #[108]  W(ijka) 
-    W['3oovo_abab'] = util.read_data2('Wovoo_baab',lread) #[109]  W(IjAk) 
-    W['3ooov_abab'] = util.read_data2('Wovoo_abab',lread) #[110]  W(IjKa) 
+    W['3ooov_aaaa'] = util.read_data2('Wovoo_aaaa',EnvVal) #[107]  W(IJKA) 
+    W['3ooov_bbbb'] = util.read_data2('Wovoo_bbbb',EnvVal) #[108]  W(ijka) 
+    W['3oovo_abab'] = util.read_data2('Wovoo_baab',EnvVal) #[109]  W(IjAk) 
+    W['3ooov_abab'] = util.read_data2('Wovoo_abab',EnvVal) #[110]  W(IjKa) 
                                                                 
     # H(AB,CI)                                                  
-    W['3vvvo_aaaa'] = util.read_data2('Wvvvo_aaaa',lread) #[127]  W(ABCI)
-    W['3vvvo_bbbb'] = util.read_data2('Wvvvo_bbbb',lread) #[128]  W(abci)
-    W['3vvov_abab'] = util.read_data2('Wvvvo_abba',lread) #[129]  W(AbIc) *
-    W['3vvvo_abab'] = util.read_data2('Wvvvo_abab',lread) #[130]  W(AbCi)
+    W['3vvvo_aaaa'] = util.read_data2('Wvvvo_aaaa',EnvVal) #[127]  W(ABCI)
+    W['3vvvo_bbbb'] = util.read_data2('Wvvvo_bbbb',EnvVal) #[128]  W(abci)
+    W['3vvov_abab'] = util.read_data2('Wvvvo_abba',EnvVal) #[129]  W(AbIc) *
+    W['3vvvo_abab'] = util.read_data2('Wvvvo_abab',EnvVal) #[130]  W(AbCi)
                                                                 
     # H(AB,CD)                                                  
-    W['4vvvv_aaaa'] = util.read_data2('Wvvvv_aaaa',lread) #[231]  W(ABCD) <- ABCD
-    W['4vvvv_bbbb'] = util.read_data2('Wvvvv_bbbb',lread) #[232]  W(abcd) <- abcd
-    W['4vvvv_abab'] = util.read_data2('Wvvvv_abab',lread) #[233]  W(AbCd) <- AbCd
+    W['4vvvv_aaaa'] = util.read_data2('Wvvvv_aaaa',EnvVal) #[231]  W(ABCD) <- ABCD
+    W['4vvvv_bbbb'] = util.read_data2('Wvvvv_bbbb',EnvVal) #[232]  W(abcd) <- abcd
+    W['4vvvv_abab'] = util.read_data2('Wvvvv_abab',EnvVal) #[233]  W(AbCd) <- AbCd
 
     # T2
-    T['vovo_aaaa'] = util.read_data2('Tvovo_aaaa',lread)
-    T['vovo_bbbb'] = util.read_data2('Tvovo_bbbb',lread)
-    T['vovo_abab'] = util.read_data2('Tvovo_abab',lread)
-    T['ovov_bbaa'] = util.read_data('Tovov_bbaa',lread)
+    T['vovo_aaaa'] = util.read_data2('Tvovo_aaaa',EnvVal)
+    T['vovo_bbbb'] = util.read_data2('Tvovo_bbbb',EnvVal)
+    T['vovo_abab'] = util.read_data2('Tvovo_abab',EnvVal)
+    T['ovov_bbaa'] = util.read_data('Tovov_bbaa',EnvVal)
 
 
     AddDiag=True
@@ -138,8 +135,8 @@ def get_Hbar_file(EnvVal):
     return F,W,T
 
 def get_Hbar_ACES2(EnvVal,lprint):
-    Nocc=EnvVal['Nocc']
-    Nvrt=EnvVal['Nvrt']
+    Nocc=EnvVal['NOCC']
+    Nvrt=EnvVal['NVRT']
 
 
     F={}
@@ -291,7 +288,7 @@ def get_Wvvvo():
     Wvvvo  = np.einsum('mb,amei->abei',T1, tmp)
     return Wvvvo
 
-def make_Hbar():
+#def make_Hbar():
     # make Hbar 
 
 

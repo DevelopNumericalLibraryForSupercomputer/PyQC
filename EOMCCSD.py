@@ -5,33 +5,16 @@ import math
 import time
 import sys
 import os
+import Base_Input as inp
+import Base_Util as util
 import EOMCCSD_Guess as guess
 import EOMCCSD_Davidson as dav
 import EOMCCSD_Hbar as hbar
-import EOMCCSD_Util as util
 import EOMCCSD_AcesPy as ap
 
 
-def read_inp():
-    # this will be moved to a separte file
-    EnvVal={} 
-    EnvVal['Irrep']=1
-    EnvVal['Nbas']=11
-    EnvVal['Nocc']=2
-    EnvVal['Nvrt']=9
-    EnvVal['RefOrb']='RHF'     
-    EnvVal['MaxIter']=20
-    EnvVal['Nroot']=1
-    EnvVal['EngTol']=1.0E-5    #Energy Tolerence
-    EnvVal['DavSubSpDim']=5    #Maximum subspace dimension
-#   EnvVal['GuessType']='CIS_FILE' 
-    EnvVal['GuessType']='Hdiag' 
-    EnvVal['HbarType']='FILE'  
-    
-    return EnvVal 
 
-
-def main():
+def main(argv):
     laces=False
 
     # -----------------
@@ -46,7 +29,7 @@ def main():
     util.make_header('EOM-CCSD program')
 
     # setting variables up 
-    EnvVal=read_inp()
+    EnvVal=inp.driver(argv)
     if (laces):
        EnvVal=ap.read_mol_info(EnvVal)
 
@@ -58,9 +41,12 @@ def main():
 
     dav.Diag_Davidson(EnvVal,F,W,T,R) 
 
+    print('\n * End of the program')
     return
 
-main()
 
+if __name__ == '__main__' :
+    argv = sys.argv
+    main(argv)
 
 

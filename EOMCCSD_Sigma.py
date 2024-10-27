@@ -1,7 +1,7 @@
 import os
 import sys
 import numpy as np
-import EOMCCSD_Util as util
+import Base_Util as util
 import EOMCCSD_Davidson as dav
 #sys.path.append("/mnt/c/Ubuntu/Workspace/Code/KISTI/Einsum")
 #import einsum as es
@@ -9,8 +9,8 @@ import EOMCCSD_Davidson as dav
 #np.set_printoptions(precision=5)
 
 def make_Sigma(EnvVal,F,W,T,R0):
-    Nocc=EnvVal['Nocc']
-    Nvrt=EnvVal['Nvrt']
+    Nocc=EnvVal['NOCC']
+    Nvrt=EnvVal['NVRT']
 
     R=expand_Vec1D(R0,Nocc,Nvrt)
     Z1=HR_Z1(EnvVal,F,W,R)
@@ -19,8 +19,8 @@ def make_Sigma(EnvVal,F,W,T,R0):
     return Z
 
 def HR_Z1(EnvVal,F,W,R):
-    Nocc=EnvVal['Nocc']
-    Nvrt=EnvVal['Nvrt']
+    Nocc=EnvVal['NOCC']
+    Nvrt=EnvVal['NVRT']
     Nov=Nocc*Nvrt
 
     R1a=R['1a']
@@ -57,8 +57,8 @@ def HR_Z1(EnvVal,F,W,R):
     return Z1
 
 def HR_Z2(EnvVal,F,W,T,R):
-    Nocc=EnvVal['Nocc']
-    Nvrt=EnvVal['Nvrt']
+    Nocc=EnvVal['NOCC']
+    Nvrt=EnvVal['NVRT']
     Nov=Nocc*Nvrt
 
     R1a=R['1a']

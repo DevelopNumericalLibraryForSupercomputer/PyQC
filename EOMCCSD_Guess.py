@@ -1,6 +1,6 @@
 import sys
 import numpy as np
-import EOMCCSD_Util as util
+import Base_Util as util
 
 def make_Hdiag(EnvVal,F):
     # diagonal approximation
@@ -48,10 +48,10 @@ def sort_and_get_indices(Eval,Evec):
     return Eval_new,Evec_new
 
 def get_CIS(EnvVal,lprint):
-    Nocc=EnvVal['Nocc']
-    Nvrt=EnvVal['Nvrt']
-    RefOrb=EnvVal['RefOrb']
-    GuessType=EnvVal['GuessType']
+    Nocc=EnvVal['NOCC']
+    Nvrt=EnvVal['NVRT']
+    RefOrb=EnvVal['REF_ORB']
+    GuessType=EnvVal['GUESS_TYPE']
     Nov=Nocc*Nvrt
 
     if (GuessType=='CIS_ACES2'):
@@ -84,10 +84,10 @@ def get_CIS(EnvVal,lprint):
     return EigVal,EigVec 
 
 def get_CISvec(EnvVal): 
-    Nocc=EnvVal['Nocc']
-    Nvrt=EnvVal['Nvrt']
-    RefOrb=EnvVal['RefOrb']
-    GuessType=EnvVal['GuessType']
+    Nocc=EnvVal['NOCC']
+    Nvrt=EnvVal['NVRT']
+    RefOrb=EnvVal['REF_ORB']
+    GuessType=EnvVal['GUESS_TYPE']
     Nov=Nocc*Nvrt
     Nroot=1
     
@@ -104,17 +104,17 @@ def get_CISvec(EnvVal):
 
 
 def driver(EnvVal,F,W):
-    Nocc=EnvVal['Nocc']
-    Nvrt=EnvVal['Nvrt']
-    Nroot=EnvVal['Nroot']
-    GuessType=EnvVal['GuessType']
+    Nocc=EnvVal['NOCC']
+    Nvrt=EnvVal['NVRT']
+    Nroot=EnvVal['NROOT']
+    GuessType=EnvVal['GUESS_TYPE']
     Nov=Nocc*Nvrt
     Rdim=Nov+Nov*Nov
     NGuessSp=2
     lprint=False   
 
     #initial R
-    if (GuessType=='Hdiag'):
+    if (GuessType=='HDIAG'):
        print('\n * Guess : diagonal approximation')
        Hdiag=make_Hdiag(EnvVal,F)
        idx=Hdiag[:Nov].argsort()[::-1][:Nroot*NGuessSp]
