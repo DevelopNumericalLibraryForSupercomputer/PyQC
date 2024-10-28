@@ -12,7 +12,7 @@ def get_default_values():
     EnvVal['REF_ORB']='RHF'
     EnvVal['NMAXITER']=20
     EnvVal['NROOT']=1
-    EnvVal['VTOL_ENG']=1.0E-5      #Energy Tolerence
+    EnvVal['VTOL_ENG']=1.0E-7      #Energy Tolerence
     EnvVal['NDIM_SUBSP']=5       #Maximum subspace dimension
     EnvVal['GUESS_TYPE']='HDIAG' # Hdiag/CIS_FILE
     EnvVal['HBAR_TYPE']='FILE'

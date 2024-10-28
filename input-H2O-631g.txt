@@ -1,0 +1,5 @@
+NBAS=13
+NOCC=5
+NVRT=8
+DATA_DIR=Data-H2O-631g
+#hbartype=Data

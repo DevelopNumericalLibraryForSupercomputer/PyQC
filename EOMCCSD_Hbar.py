@@ -10,9 +10,9 @@ def get_Hbar(EnvVal,lprint):
        F,W,T=get_Hbar_ACES2(EnvVal,lprint)
     elif HbarType=='FILE':
        #F,W,T=get_Hbar_file(EnvVal)
-       F,W,T=get_Hbar_file2(EnvVal)
+       F,W,T,L=get_Hbar_file2(EnvVal)
 
-    return F,W,T
+    return F,W,T,L
 
 def get_Hbar_file2(EnvVal):
     print('\n * Getting Hbar from file')
@@ -23,8 +23,9 @@ def get_Hbar_file2(EnvVal):
     F={}
     W={}
     T={}
+    L={}
 
-    T['2aa']=util.read_data('T2',EnvVal)
+    T['2ab']=util.read_data('T2',EnvVal)
 
     F['oo']=util.read_data('Foo',EnvVal)
     F['vv']=util.read_data('Fvv',EnvVal)
@@ -37,10 +38,10 @@ def get_Hbar_file2(EnvVal):
     W['ovov'] = util.read_data('Wovov',EnvVal) # [54] * ovov 
     W['ovvo'] = util.read_data('Wovvo',EnvVal) # [56] * ovvo 
     W['vvvv'] = util.read_data('Wvvvv',EnvVal) # [233] * vvvv
-    W['oovv'] = util.read_data('Woovv',EnvVal) # [?] * oovv
     W['vvvo'] = util.read_data('Wvvvo',EnvVal) # [?] * vvvo
+    L['oovv'] = util.read_data('Loovv',EnvVal) # [?] * oovv
 
-    return F,W,T
+    return F,W,T,L
 
 def get_Hbar_file(EnvVal):
     print('\n * Getting Hbar from file')

@@ -3,16 +3,18 @@ import numpy as np
 import Base_Util as util
 
 def make_Hdiag(EnvVal,F):
-    # diagonal approximation
+    #print('Hdiag : diagonal approximation')
     EngOcc=F['oo'].diagonal()
     EngVrt=F['vv'].diagonal()
-    D1a = EngOcc.reshape(-1,1)-EngVrt
-    D2aa= EngOcc.reshape(-1,1,1,1)+EngOcc.reshape(-1,1,1) \
-         -EngVrt.reshape(-1,1)-EngVrt
+
+    D1a = EngOcc.reshape(-1,1)-EngVrt.reshape(1,-1)  #e(i)-e(a)
+    D2oo= EngOcc.reshape(-1,1,1,1)+EngOcc.reshape(-1,1,1)
+    D2vv= EngVrt.reshape(-1,1)+EngVrt.reshape(1,-1)
+    D2ab= D2oo-D2vv  #e(i)+e(j)-e(a)-e(b)
 
     D1a =D1a.flatten()
-    D2aa=D2aa.flatten()
-    D=np.concatenate((D1a,D2aa),axis=0)
+    D2ab=D2ab.flatten()
+    D=np.concatenate((D1a,D2ab),axis=0)
     return D
 
 def sort_and_get_indices(Eval,Evec):
@@ -115,10 +117,14 @@ def driver(EnvVal,F,W):
 
     #initial R
     if (GuessType=='HDIAG'):
-       print('\n * Guess : diagonal approximation')
+       #print('\n * Guess : diagonal approximation')
        Hdiag=make_Hdiag(EnvVal,F)
-       idx=Hdiag[:Nov].argsort()[::-1][:Nroot*NGuessSp]
+       D1a=Hdiag[:Nov]
+       idx=D1a.argsort()[::-1]  #D1a(ordered)
+       idx=idx[:Nroot*NGuessSp] #Choose the M lowest elements (M=Nroor*NGuessSp)
+        
        R = np.eye(Rdim)[:,idx]
+       print(' - Size of the guess vector = '+str(R.shape))
 
     elif (GuessType[0:3]=='CIS'):
        print('\n * Guess : from CIS vectors')

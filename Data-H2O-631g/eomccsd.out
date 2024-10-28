@@ -1,0 +1,78 @@
+
+  Memory set to   1.863 GiB by Python driver.
+
+Initalizing CCSD object...
+
+Starting AO ->  MO transformation...
+Size of the ERI tensor is 0.00 GB, 13 basis functions.
+Building initial guess...
+
+..initialized CCSD in 0.015 seconds.
+
+CCSD Iteration   0: CCSD correlation = -0.132348289653805   dE =  1.32348E-01   MP2
+CCSD Iteration   1: CCSD correlation = -0.134256402161141   dE = -1.90811E-03   DIIS = 0
+CCSD Iteration   2: CCSD correlation = -0.137403701966724   dE = -3.14730E-03   DIIS = 1
+CCSD Iteration   3: CCSD correlation = -0.138630274864868   dE = -1.22657E-03   DIIS = 2
+CCSD Iteration   4: CCSD correlation = -0.138977703016236   dE = -3.47428E-04   DIIS = 3
+CCSD Iteration   5: CCSD correlation = -0.139004463649953   dE = -2.67606E-05   DIIS = 4
+CCSD Iteration   6: CCSD correlation = -0.139009248115504   dE = -4.78447E-06   DIIS = 5
+CCSD Iteration   7: CCSD correlation = -0.139007283661773   dE =  1.96445E-06   DIIS = 6
+CCSD Iteration   8: CCSD correlation = -0.139007099677469   dE =  1.83984E-07   DIIS = 7
+CCSD Iteration   9: CCSD correlation = -0.139007074311785   dE =  2.53657E-08   DIIS = 7
+CCSD Iteration  10: CCSD correlation = -0.139007053874574   dE =  2.04372E-08   DIIS = 7
+CCSD Iteration  11: CCSD correlation = -0.139007055358744   dE = -1.48417E-09   DIIS = 7
+
+CCSD has converged in 0.024 seconds!
+
+
+Final CCSD correlation energy:..-0.139007055358744
+Total CCSD energy:............,-76.119773617040636
+
+Building HBAR components ...
+
+..HBAR Build completed !!
+ndocc = 5
+nvir = 8
+nov = 40
+Guess
+[[0. 0.]
+ [0. 0.]
+ [0. 0.]
+ ...
+ [0. 0.]
+ [0. 0.]
+ [0. 0.]]
+EOMCCSD: Iter #      0 L = 2
+    Root 0: e =       0.389528845145 de =       0.389528845145 |r| =       0.480977627409
+EOMCCSD: Iter #      1 L = 3
+    Root 0: e =       0.289434875102 de =       0.100093970043 |r| =       0.113881080295
+EOMCCSD: Iter #      2 L = 4
+    Root 0: e =       0.289865213290 de =       0.000430338188 |r| =       0.054854466051
+EOMCCSD: Iter #      3 L = 5
+    Root 0: e =       0.290178074335 de =       0.000312861045 |r| =       0.019988388043
+EOMCCSD: Iter #      4 L = 1
+    Root 0: e =       0.290178074335 de =       0.000312861045 |r| =       0.019988388043
+EOMCCSD: Iter #      5 L = 2
+    Root 0: e =       0.290123398526 de =       0.000054675809 |r| =       0.006644000350
+EOMCCSD: Iter #      6 L = 3
+    Root 0: e =       0.290154933863 de =       0.000031535337 |r| =       0.001951814374
+EOMCCSD: Iter #      7 L = 4
+    Root 0: e =       0.290202378291 de =       0.000047444428 |r| =       0.000901198682
+EOMCCSD: Iter #      8 L = 5
+    Root 0: e =       0.290216127430 de =       0.000013749139 |r| =       0.000143598825
+EOMCCSD: Iter #      9 L = 1
+    Root 0: e =       0.290216127430 de =       0.000013749139 |r| =       0.000143598825
+EOMCCSD: Iter #     10 L = 2
+    Root 0: e =       0.290215989656 de =       0.000000137775 |r| =       0.000073222566
+EOMCCSD: Iter #     11 L = 3
+    Root 0: e =       0.290215485432 de =       0.000000504223 |r| =       0.000017289274
+EOMCCSD: Iter #     12 L = 4
+    Root 0: e =       0.290215368894 de =       0.000000116538 |r| =       0.000006160479
+EOMCCSD: Iter #     13 L = 5
+    Root 0: e =       0.290215358971 de =       0.000000009923 |r| =       0.000001755602
+EOMCCSD Davidson iterations finished in 0.038344383239746094s
+Davidson Converged!
+Excitation Energies
+Root #        Hartree                  eV         
+------  --------------------  --------------------
+     0        0.290215358971        7.897162161896
