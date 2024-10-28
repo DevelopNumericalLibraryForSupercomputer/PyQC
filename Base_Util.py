@@ -39,6 +39,7 @@ def write_data(String,mat,dim,lwrite):
 
 def read_data(String,EnvVal):
     DataDir=EnvVal['DATA_DIR']
+    LDebug=EnvVal['HBAR_DEBUG']
     fout=DataDir+'/Data-'+String+'.txt'
     #print(' - '+fout)
 
@@ -47,16 +48,26 @@ def read_data(String,EnvVal):
     dim=[]
     for val in tmp:
         dim.append(int(val))
+
+    if LDebug=='TRUE':
+       idx=len(dim)
+    else:
+       idx=0
+
     if (len(dim)==1):
+       if LDebug=='TRUE':
+          idx=0
+       else:
+          idx=1
        mat=np.zeros(dim[0])
        for i0 in range(dim[0]):
-           mat[i0]=float(f.readline().split()[1])
+           mat[i0]=float(f.readline().split()[idx])
 
     elif (len(dim)==2):
        mat=np.zeros((dim[0],dim[1]))
        for i0 in range(dim[0]):
            for i1 in range(dim[1]):
-               mat[i0,i1]=float(f.readline().split()[2])
+               mat[i0,i1]=float(f.readline().split()[idx])
 
     elif (len(dim)==4):
        mat=np.zeros((dim[0],dim[1],dim[2],dim[3]))
@@ -64,7 +75,7 @@ def read_data(String,EnvVal):
            for i1 in range(dim[1]):
                for i2 in range(dim[2]):
                    for i3 in range(dim[3]):
-                       mat[i0,i1,i2,i3]=float(f.readline().split()[4])
+                       mat[i0,i1,i2,i3]=float(f.readline().split()[idx])
     f.close()
     return mat
 

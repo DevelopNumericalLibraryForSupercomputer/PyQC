@@ -59,7 +59,7 @@ def get_CIS(EnvVal,lprint):
     if (GuessType=='CIS_ACES2'):
        print(' - Reading CIS matrix from ACES2')
        #if aces2py not in sys.modules:
-       import EOMCCSD_AcesPy as ap 
+       import Base_AcesPy as ap 
        EigVal,EigVec = ap.get_CIS_matrix(Nocc,Nvrt)
        EigVec=EigVec.reshape(Nov,Nov)
        Val,Vec = sort_and_get_indices(EigVal,EigVec)
@@ -117,14 +117,16 @@ def driver(EnvVal,F,W):
 
     #initial R
     if (GuessType=='HDIAG'):
-       #print('\n * Guess : diagonal approximation')
+       print('\n * Guess : diagonal approximation')
        Hdiag=make_Hdiag(EnvVal,F)
        D1a=Hdiag[:Nov]
        idx=D1a.argsort()[::-1]  #D1a(ordered)
        idx=idx[:Nroot*NGuessSp] #Choose the M lowest elements (M=Nroor*NGuessSp)
         
        R = np.eye(Rdim)[:,idx]
-       print(' - Size of the guess vector = '+str(R.shape))
+       print(' - Size of the guess vector (Rov+Roovv) = '+str(R.shape))
+       print('   Rov+Roovv      = '+str(Nov)+'+'+str(Nov*Nov))
+       print('   Nroot*NGuessSp = '+str(Nroot*NGuessSp)) 
 
     elif (GuessType[0:3]=='CIS'):
        print('\n * Guess : from CIS vectors')

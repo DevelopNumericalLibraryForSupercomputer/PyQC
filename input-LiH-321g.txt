@@ -1,5 +1,4 @@
-NBAS=11
 NOCC=2
 NVRT=9
 DATA_DIR=Data-LiH-321g
-#hbartype=Data
+#hbar_type=file

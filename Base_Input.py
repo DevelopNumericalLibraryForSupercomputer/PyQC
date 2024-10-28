@@ -12,10 +12,11 @@ def get_default_values():
     EnvVal['REF_ORB']='RHF'
     EnvVal['NMAXITER']=20
     EnvVal['NROOT']=1
-    EnvVal['VTOL_ENG']=1.0E-7      #Energy Tolerence
+    EnvVal['VTOL_ENG']=1.0E-7    #Energy Tolerence
     EnvVal['NDIM_SUBSP']=5       #Maximum subspace dimension
     EnvVal['GUESS_TYPE']='HDIAG' # Hdiag/CIS_FILE
     EnvVal['HBAR_TYPE']='FILE'
+    EnvVal['HBAR_DEBUG']='TRUE'
     EnvVal['DATA_DIR']='NA'
     return EnvVal
 
@@ -50,12 +51,23 @@ def read_input_line(EnvVal,line):
 
 
 def print_inpkey_values(EnvVal):
-    dim=len(EnvVal)
     print(' - Input keys:') 
     print('   '+'-'*45)
     for key, value in EnvVal.items():
         print('   %-20s : %-20s' % (key, str(value)))
     print('   '+'-'*45)
+
+def check_inpkey_values(EnvVal):
+    for key, value in EnvVal.items():
+        if (key=='NOCC' or key=='NVRT'):
+           if (EnvVal[key]==0):
+              print(' - Error: '+str(key)+' is not set.')
+              exit(1)
+
+def get_inpkey_values(EnvVal):
+    if (EnvVal['NBAS']==0): 
+       EnvVal['NBAS']=EnvVal['NOCC']+EnvVal['NVRT']
+    return EnvVal
 
 def driver(argv):
     print(' * Input module') 
@@ -65,6 +77,9 @@ def driver(argv):
 
        EnvVal=get_default_values()
        EnvVal=read_input_file(EnvVal,argv)
+
+       check_inpkey_values(EnvVal)
+       EnvVal=get_inpkey_values(EnvVal)
        print_inpkey_values(EnvVal)
     else:
        print(' - Error: One input file should be specified.')

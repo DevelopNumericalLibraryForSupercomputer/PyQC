@@ -1,7 +1,7 @@
 import numpy as np
 import os
 import Base_Util as util
-import EOMCCSD_AcesPy as ap
+import Base_AcesPy as ap
 
 def get_Hbar(EnvVal,lprint):
     HbarType=EnvVal['HBAR_TYPE']
@@ -9,7 +9,6 @@ def get_Hbar(EnvVal,lprint):
     if HbarType=='ACES2':
        F,W,T=get_Hbar_ACES2(EnvVal,lprint)
     elif HbarType=='FILE':
-       #F,W,T=get_Hbar_file(EnvVal)
        F,W,T,L=get_Hbar_file2(EnvVal)
 
     return F,W,T,L
@@ -19,7 +18,6 @@ def get_Hbar_file2(EnvVal):
     Nocc=EnvVal['NOCC']
     Nvrt=EnvVal['NVRT']
     
-
     F={}
     W={}
     T={}
@@ -288,10 +286,5 @@ def get_Wvvvo():
     tmp    = np.einsum('niaf,nmef->amei',T2, Woovv)
     Wvvvo  = np.einsum('mb,amei->abei',T1, tmp)
     return Wvvvo
-
-#def make_Hbar():
-    # make Hbar 
-
-
 
 

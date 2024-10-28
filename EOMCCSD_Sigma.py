@@ -98,17 +98,25 @@ def HR_Z2(EnvVal,F,W,T,L,R):
     Z2ab -= np.einsum("mbje,imae->ijab", Wovov, R2ab)          
     Z2ab -= np.einsum("maje,imeb->ijab", Wovov, R2ab)       
 
-    ## Three body terms in Hds and Hdd
+    ## Hds (Three body terms)
     ## (FORMQ1/GFORMG2 in ACES2)
     Yvv   = 0.0
     Yvv  += np.einsum("amfe,me->af",   Wvovv, R1a)*2.0 
     Yvv  -= np.einsum("amef,me->af",   Wvovv, R1a)     
-    Yvv  -= np.einsum("nmfe,nmae->af", Loovv, R2ab)    
     Z2ab += np.einsum("af,ijfb->ijab", Yvv,   T2ab)    
 
     Yoo   = 0.0
     Yoo  -= np.einsum("nmie,me->ni",   Wooov, R1a)*2.0
     Yoo  += np.einsum("mnie,me->ni",   Wooov, R1a)    
+    Z2ab += np.einsum("ni,njab->ijab", Yoo,   T2ab)   
+
+    ## Hdd (Three body terms) 
+    ## (FORMQ1/GFORMG2 in ACES2)
+    Yvv   = 0.0
+    Yvv  -= np.einsum("nmfe,nmae->af", Loovv, R2ab)    
+    Z2ab += np.einsum("af,ijfb->ijab", Yvv,   T2ab)    
+
+    Yoo   = 0.0
     Yoo  -= np.einsum("nmfe,imfe->ni", Loovv, R2ab)
     Z2ab += np.einsum("ni,njab->ijab", Yoo,   T2ab)   
 

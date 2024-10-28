@@ -2,7 +2,9 @@ import os
 import numpy as np
 import Base_Util as util
 import EOMCCSD_Sigma as sig
-np.set_printoptions(precision=5,suppress=True)
+import EOMCCSD_Guess as guess
+#np.set_printoptions(precision=5,suppress=True)
+np.set_printoptions(precision=5)
 
 def Diag_Davidson(EnvVal,F,W,T,L,R):
     Nocc=EnvVal['NOCC']
@@ -16,7 +18,7 @@ def Diag_Davidson(EnvVal,F,W,T,L,R):
     DimR=Nov+Nov*Nov
     NGuessSp=2
 
-    Hdiag=make_Hdiag(EnvVal,F,W)
+    Hdiag=guess.make_Hdiag(EnvVal,F)
 
     Eng=[0.0]*Nroot*NGuessSp
 
@@ -36,15 +38,11 @@ def Diag_Davidson(EnvVal,F,W,T,L,R):
         Z=np.zeros((DimR,DimG))
         for i in range(DimG):
             Z[:,i]=sig.make_Sigma(EnvVal,F,W,T,L,R[:,i])
-#           for j in range(i+1):
             for j in range(DimG):
                 G[j,i]=np.dot(R[:,j],Z[:,i])
-#               G[i,j]=G[j,i]
         print('Subspace matrix (G)')
         print(G)
         Eng,Evec=np.linalg.eig(G)
-#       print('Eigenvaules of G')
-#       print(Eng)
 
         # select root (by energy) 
         idx=Eng.argsort()[:Nroot]
@@ -52,16 +50,17 @@ def Diag_Davidson(EnvVal,F,W,T,L,R):
         Evec=np.real(Evec[:,idx])
 
         # get new vector
+        Enorm=0.0
         for i in range(Nroot):
             ResVec = np.dot(Z-Eng[i]*R, Evec[:,i])
             CorrVec=ResVec/(Eng[i]-Hdiag)
             dE=abs(Eng[i]-Eng_old[i])
-            print(' - #%d :  E[%d] = %.10f    dE = %.10f ' % (Iter,i+1,Eng[i],dE))
+            print('   Iter.%3d :  E[%d] = %.10f    dE = %.10f ' % (Iter,i+1,Eng[i],dE))
+            Enorm += dE*dE
+        Enorm=np.sqrt(Enorm)
 
         # check conv. / if not, update R
-        Eng_norm=np.linalg.norm(Eng[:Nroot] - Eng_old)
-#       if (dE < EngTol) and (Iter>1): 
-        if (Eng_norm < EngTol) and (Iter>1): 
+        if (Enorm < EngTol) and (Iter>1): 
            print('\n * EOM-CCSD Converged')
            for i in range(Nroot):
                print(' - Energy for the state %d = %.10f ' % (i+1,Eng[i]))
@@ -69,25 +68,9 @@ def Diag_Davidson(EnvVal,F,W,T,L,R):
         else:   
            if DimG >= DavSubSpDim:
               R=np.dot(R,Evec)    # start the new subspace with the last estimate
-#             Eng_old=Eng
               Eng=Eng_old
            else: 
               R=np.c_[R,CorrVec]  # update R 
 
     return
-
-
-def make_Hdiag(EnvVal,F,W):
-    # diagonal approximation
-    EngOcc=F['oo'].diagonal()
-    EngVrt=F['vv'].diagonal()
-    D1a = EngOcc.reshape(-1,1)-EngVrt
-    D2ab= EngOcc.reshape(-1,1,1,1)+EngOcc.reshape(-1,1,1) \
-         -EngVrt.reshape(-1,1)-EngVrt
-
-    D1a =D1a.flatten()
-    D2ab=D2ab.flatten()
-    D=np.concatenate((D1a,D2ab),axis=0)
-    return D
-
 
