@@ -112,8 +112,8 @@ def driver(EnvVal,F,W):
     GuessType=EnvVal['GUESS_TYPE']
     NdimGuess=EnvVal['NDIM_GUESS']
     Nov=Nocc*Nvrt
-    Rdim1=Nov+Nov*Nov
-    Rdim2=Nroot*NdimGuess
+    Rrow=Nov+Nov*Nov
+    Rcol=Nroot*NdimGuess
     lprint=False   
 
     #initial R
@@ -124,24 +124,24 @@ def driver(EnvVal,F,W):
        idx=D1a.argsort()[::-1]  #D1a(ordered)
        idx=idx[:Nroot*NdimGuess] #Choose the M lowest elements (M=Nroor*NdimGuess)
 
-       R = np.zeros([Rdim1,Rdim2])
-       for i in range(Rdim2):
+       R = np.zeros([Rrow,Rcol])
+       for i in range(Rcol):
            R[idx[i],i]=1.0
 
     elif (GuessType[0:3]=='CIS'):
        print('\n * Guess : from CIS vectors')
        Val,Vec=get_CIS(EnvVal,lprint)
-       idx=Val.argsort()[:Rdim2]
+       idx=Val.argsort()[:Rcol]
 
-       R = np.zeros((Rdim1,Rdim2))
-       for i in range(Rdim2):
+       R = np.zeros((Rrow,Rcol))
+       for i in range(Rcol):
            R[:Nov,i] = Vec[:Nov,idx[i]]
 
     else:
        print('\n * Guess : Error, Unknown Guess type = '+GuessType)
        exit(1)
        
-    print(' - Size of the guess vector (Rdim1,Rdim2) = '+str(R.shape))
-    print('   Rdim1: Rov+Roovv       = '+str(Nov)+'+'+str(Nov*Nov))
-    print('   Rdim2: Nroot*NdimGuess = '+str(Nroot*NdimGuess)) 
+    print(' - Size of the guess vector (Rrow,Rcol) = '+str(R.shape))
+    print('   Rrow: Rov+Roovv       = '+str(Nov)+'+'+str(Nov*Nov))
+    print('   Rcol: Nroot*NdimGuess = '+str(Nroot*NdimGuess)) 
     return R

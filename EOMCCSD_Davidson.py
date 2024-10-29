@@ -13,7 +13,7 @@ def Diag_Davidson(EnvVal,F,W,T,L,R):
     MaxIter=EnvVal['NMAXITER']
     Nroot=EnvVal['NROOT']  #for now, Nroot=1
     EngTol=EnvVal['VTOL_ENG']
-    DavSubSpDim=EnvVal['NDIM_SUBSP'] #Maximum subspace dimension
+    NDimSubSp=EnvVal['NDIM_SUBSP'] #Maximum subspace dimension
     Nov=Nocc*Nvrt
     DimR=Nov+Nov*Nov
     NGuessSp=2
@@ -66,7 +66,7 @@ def Diag_Davidson(EnvVal,F,W,T,L,R):
                print(' - Energy for the state %d = %.10f ' % (i+1,Eng[i]))
            return
         else:   
-           if DimG >= DavSubSpDim:
+           if DimG >= NDimSubSp:
               R=np.dot(R,Evec)    # start the new subspace with the last estimate
               Eng=EngOld
            else: 

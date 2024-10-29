@@ -35,7 +35,7 @@ def main(argv):
 
     #Smat,Hcore,Jmat,Kmat=ap.read_ints(Nbas)  # get integrals
     lprint=False
-    F,W,T,L = hbar.get_Hbar(EnvVal,lprint)
+    F,W,T,L = hbar.driver(EnvVal,lprint)
 
     R=guess.driver(EnvVal,F,W)
 

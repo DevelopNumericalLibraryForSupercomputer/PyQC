@@ -59,7 +59,7 @@ def read_ints(Nbas):
 #   Jmat = Int2.reshape(Nbas**2,Nbas**2)
     Jmat = Int2.swapaxes(2, 3)
     Jmat = Jmat.reshape(Nbas**2,Nbas**2)
-    Kmat = Int2.swapaxes(1, 2)  # Why not swapaxes(1,3)?
+    Kmat = Int2.swapaxes(1, 2)  
     Kmat = Kmat.reshape(Nbas**2,Nbas**2)
 
     # np.savetxt('Int1.csv', Int1, delimiter=',')
