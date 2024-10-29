@@ -16,7 +16,7 @@ def get_default_values():
     EnvVal['NDIM_SUBSP']=5       #Maximum subspace dimension
     EnvVal['GUESS_TYPE']='HDIAG' # Hdiag/CIS_FILE
     EnvVal['HBAR_TYPE']='FILE'
-    EnvVal['HBAR_DEBUG']='TRUE'
+    EnvVal['HBAR_DEBUG']='FALSE'
     EnvVal['DATA_DIR']='NA'
     return EnvVal
 

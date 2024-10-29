@@ -40,8 +40,8 @@ def Diag_Davidson(EnvVal,F,W,T,L,R):
             Z[:,i]=sig.make_Sigma(EnvVal,F,W,T,L,R[:,i])
             for j in range(DimG):
                 G[j,i]=np.dot(R[:,j],Z[:,i])
-        print('Subspace matrix (G)')
-        print(G)
+        #print('Subspace matrix (G)')
+        #print(G)
         Eng,Evec=np.linalg.eig(G)
 
         # select root (by energy) 

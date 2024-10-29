@@ -114,6 +114,7 @@ def driver(EnvVal,F,W):
     Rdim=Nov+Nov*Nov
     NGuessSp=2
     lprint=False   
+    Rdim2=Nroot*NGuessSp
 
     #initial R
     if (GuessType=='HDIAG'):
@@ -122,8 +123,14 @@ def driver(EnvVal,F,W):
        D1a=Hdiag[:Nov]
        idx=D1a.argsort()[::-1]  #D1a(ordered)
        idx=idx[:Nroot*NGuessSp] #Choose the M lowest elements (M=Nroor*NGuessSp)
-        
-       R = np.eye(Rdim)[:,idx]
+       #print(idx) 
+
+       #R = np.eye(Rdim)[:,idx]
+       R = np.zeros([Rdim,Rdim2])
+       for i in range(Rdim2):
+           #print(str(idx[i])+','+str(i)+' --> 1.0')
+           R[idx[i],i]=1.0
+       
        print(' - Size of the guess vector (Rov+Roovv) = '+str(R.shape))
        print('   Rov+Roovv      = '+str(Nov)+'+'+str(Nov*Nov))
        print('   Nroot*NGuessSp = '+str(Nroot*NGuessSp)) 
