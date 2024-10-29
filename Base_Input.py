@@ -15,6 +15,7 @@ def get_default_values():
     EnvVal['VTOL_ENG']=1.0E-7    #Energy Tolerence
     EnvVal['NDIM_SUBSP']=5       #Maximum subspace dimension
     EnvVal['GUESS_TYPE']='HDIAG' # Hdiag/CIS_FILE
+    EnvVal['NDIM_GUESS']=2
     EnvVal['HBAR_TYPE']='FILE'
     EnvVal['HBAR_DEBUG']='FALSE'
     EnvVal['DATA_DIR']='NA'

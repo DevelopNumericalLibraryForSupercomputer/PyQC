@@ -30,7 +30,7 @@ def Diag_Davidson(EnvVal,F,W,T,L,R):
         R=Qval
 
         # save energies
-        Eng_old=Eng[:Nroot] 
+        EngOld=Eng[:Nroot] 
 
         # make the subspace and diagonalize
         DimG=R.shape[1]
@@ -50,17 +50,17 @@ def Diag_Davidson(EnvVal,F,W,T,L,R):
         Evec=np.real(Evec[:,idx])
 
         # get new vector
-        Enorm=0.0
+        EngNorm=0.0
         for i in range(Nroot):
             ResVec = np.dot(Z-Eng[i]*R, Evec[:,i])
             CorrVec=ResVec/(Eng[i]-Hdiag)
-            dE=abs(Eng[i]-Eng_old[i])
+            dE=abs(Eng[i]-EngOld[i])
             print('   Iter.%3d :  E[%d] = %.10f    dE = %.10f ' % (Iter,i+1,Eng[i],dE))
-            Enorm += dE*dE
-        Enorm=np.sqrt(Enorm)
+            EngNorm += dE*dE
+        EngNorm=np.sqrt(EngNorm)
 
         # check conv. / if not, update R
-        if (Enorm < EngTol) and (Iter>1): 
+        if (EngNorm < EngTol) and (Iter>1): 
            print('\n * EOM-CCSD Converged')
            for i in range(Nroot):
                print(' - Energy for the state %d = %.10f ' % (i+1,Eng[i]))
@@ -68,7 +68,7 @@ def Diag_Davidson(EnvVal,F,W,T,L,R):
         else:   
            if DimG >= DavSubSpDim:
               R=np.dot(R,Evec)    # start the new subspace with the last estimate
-              Eng=Eng_old
+              Eng=EngOld
            else: 
               R=np.c_[R,CorrVec]  # update R 
 

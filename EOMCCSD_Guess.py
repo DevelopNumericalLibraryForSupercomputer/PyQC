@@ -110,11 +110,11 @@ def driver(EnvVal,F,W):
     Nvrt=EnvVal['NVRT']
     Nroot=EnvVal['NROOT']
     GuessType=EnvVal['GUESS_TYPE']
+    NdimGuess=EnvVal['NDIM_GUESS']
     Nov=Nocc*Nvrt
-    Rdim=Nov+Nov*Nov
-    NGuessSp=2
+    Rdim1=Nov+Nov*Nov
+    Rdim2=Nroot*NdimGuess
     lprint=False   
-    Rdim2=Nroot*NGuessSp
 
     #initial R
     if (GuessType=='HDIAG'):
@@ -122,28 +122,26 @@ def driver(EnvVal,F,W):
        Hdiag=make_Hdiag(EnvVal,F)
        D1a=Hdiag[:Nov]
        idx=D1a.argsort()[::-1]  #D1a(ordered)
-       idx=idx[:Nroot*NGuessSp] #Choose the M lowest elements (M=Nroor*NGuessSp)
-       #print(idx) 
+       idx=idx[:Nroot*NdimGuess] #Choose the M lowest elements (M=Nroor*NdimGuess)
 
-       #R = np.eye(Rdim)[:,idx]
-       R = np.zeros([Rdim,Rdim2])
+       R = np.zeros([Rdim1,Rdim2])
        for i in range(Rdim2):
-           #print(str(idx[i])+','+str(i)+' --> 1.0')
            R[idx[i],i]=1.0
-       
-       print(' - Size of the guess vector (Rov+Roovv) = '+str(R.shape))
-       print('   Rov+Roovv      = '+str(Nov)+'+'+str(Nov*Nov))
-       print('   Nroot*NGuessSp = '+str(Nroot*NGuessSp)) 
 
     elif (GuessType[0:3]=='CIS'):
        print('\n * Guess : from CIS vectors')
        Val,Vec=get_CIS(EnvVal,lprint)
-       idx=Val.argsort()[:Nroot*NGuessSp]
-       R = np.zeros((Rdim,Nroot*NGuessSp))
-       for i in range(Nroot*NGuessSp):
+       idx=Val.argsort()[:Rdim2]
+
+       R = np.zeros((Rdim1,Rdim2))
+       for i in range(Rdim2):
            R[:Nov,i] = Vec[:Nov,idx[i]]
 
     else:
        print('\n * Guess : Error, Unknown Guess type = '+GuessType)
-
+       exit(1)
+       
+    print(' - Size of the guess vector (Rdim1,Rdim2) = '+str(R.shape))
+    print('   Rdim1: Rov+Roovv       = '+str(Nov)+'+'+str(Nov*Nov))
+    print('   Rdim2: Nroot*NdimGuess = '+str(Nroot*NdimGuess)) 
     return R

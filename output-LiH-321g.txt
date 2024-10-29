@@ -1,0 +1,53 @@
+
+   ====================
+     EOM-CCSD program  
+   ====================
+
+ * Input module
+ - Input file: input-LiH-321g.txt
+ - Input keys:
+   ---------------------------------------------
+   NIRREP               : 1                   
+   NBAS                 : 11                  
+   NOCC                 : 2                   
+   NVRT                 : 9                   
+   REF_ORB              : RHF                 
+   NMAXITER             : 20                  
+   NROOT                : 1                   
+   VTOL_ENG             : 1e-07               
+   NDIM_SUBSP           : 5                   
+   GUESS_TYPE           : HDIAG               
+   HBAR_TYPE            : FILE                
+   HBAR_DEBUG           : TRUE                
+   DATA_DIR             : Data-LiH-321g       
+   ---------------------------------------------
+
+ * Getting Hbar from file
+
+ * Guess : diagonal approximation
+ - Size of the guess vector (Rov+Roovv) = (342, 2)
+   Rov+Roovv      = 18+324
+   Nroot*NGuessSp = 2
+
+ * EOM-CCSD iteration, Max=20
+   Iter.  0 :  E[1] = 0.1929814788    dE = 0.1929814788 
+   Iter.  1 :  E[1] = 0.1370578983    dE = 0.0559235805 
+   Iter.  2 :  E[1] = 0.1308460324    dE = 0.0062118659 
+   Iter.  3 :  E[1] = 0.1284882632    dE = 0.0023577692 
+   Iter.  4 :  E[1] = 0.1284882632    dE = 0.0023577692 
+   Iter.  5 :  E[1] = 0.1277610637    dE = 0.0007271994 
+   Iter.  6 :  E[1] = 0.1271759313    dE = 0.0005851324 
+   Iter.  7 :  E[1] = 0.1270261500    dE = 0.0001497813 
+   Iter.  8 :  E[1] = 0.1271929822    dE = 0.0001668321 
+   Iter.  9 :  E[1] = 0.1271929822    dE = 0.0001668321 
+   Iter. 10 :  E[1] = 0.1272300179    dE = 0.0000370357 
+   Iter. 11 :  E[1] = 0.1272561218    dE = 0.0000261039 
+   Iter. 12 :  E[1] = 0.1272487537    dE = 0.0000073681 
+   Iter. 13 :  E[1] = 0.1272475770    dE = 0.0000011767 
+   Iter. 14 :  E[1] = 0.1272475770    dE = 0.0000011767 
+   Iter. 15 :  E[1] = 0.1272476512    dE = 0.0000000742 
+
+ * EOM-CCSD Converged
+ - Energy for the state 1 = 0.1272476512 
+
+ * End of the program

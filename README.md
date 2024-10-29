@@ -5,6 +5,5 @@ In this version, some permuations needed in sigma vector are done when the Hbar 
 
 This program needs c++ einsum, or one can simply change 'es.c_einsum' to 'np.einsum' for the use of the conventional einsum routine.
 To run this program, type following in the command line.
-python EOMCCSD.py
+python EOMCCSD.py [input file]
 
-The Hbar routine and other examples will be added in future.

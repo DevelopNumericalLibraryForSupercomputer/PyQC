@@ -34,14 +34,6 @@ Building HBAR components ...
 ndocc = 5
 nvir = 8
 nov = 40
-Guess
-[[0. 0.]
- [0. 0.]
- [0. 0.]
- ...
- [0. 0.]
- [0. 0.]
- [0. 0.]]
 EOMCCSD: Iter #      0 L = 2
     Root 0: e =       0.389528845145 de =       0.389528845145 |r| =       0.480977627409
 EOMCCSD: Iter #      1 L = 3
