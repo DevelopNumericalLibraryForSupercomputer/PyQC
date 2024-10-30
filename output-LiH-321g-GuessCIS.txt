@@ -1,0 +1,54 @@
+
+   ====================
+     EOM-CCSD program  
+   ====================
+
+ * Input module
+ - Input file: input-LiH-321g.txt
+ - Input keys:
+   ---------------------------------------------
+   NIRREP               : 1                   
+   NBAS                 : 11                  
+   NOCC                 : 2                   
+   NVRT                 : 9                   
+   REF_ORB              : RHF                 
+   NMAX_ITER            : 20                  
+   NROOT                : 1                   
+   VTOL_ENG             : 1e-07               
+   NDIM_SUBSP           : 5                   
+   GUESS_TYPE           : CIS_FILE            
+   NDIM_GUESS           : 2                   
+   HBAR_TYPE            : FILE                
+   HBAR_DEBUG           : TRUE                
+   DATA_DIR             : Data-LiH-321g       
+   ---------------------------------------------
+
+ * Getting Hbar from file
+
+ * Guess : from CIS vectors
+ - Reading CIS matrix from file
+ - Size of the guess vector (Rrow,Rcol) = (342, 2)
+   Rrow: Rov+Roovv       = 18+324
+   Rcol: Nroot*NdimGuess = 2
+
+ * EOM-CCSD iteration, Max=20
+   Iter.  0 :  E[1] = 0.1820889509    dE = 0.1820889509 
+   Iter.  1 :  E[1] = 0.1323753058    dE = 0.0497136451 
+   Iter.  2 :  E[1] = 0.1290389081    dE = 0.0033363978 
+   Iter.  3 :  E[1] = 0.1280310366    dE = 0.0010078714 
+   Iter.  4 :  E[1] = 0.1280310366    dE = 0.0010078714 
+   Iter.  5 :  E[1] = 0.1275586489    dE = 0.0004723877 
+   Iter.  6 :  E[1] = 0.1271440421    dE = 0.0004146068 
+   Iter.  7 :  E[1] = 0.1270120642    dE = 0.0001319779 
+   Iter.  8 :  E[1] = 0.1271760067    dE = 0.0001639425 
+   Iter.  9 :  E[1] = 0.1271760067    dE = 0.0001639425 
+   Iter. 10 :  E[1] = 0.1272254987    dE = 0.0000494920 
+   Iter. 11 :  E[1] = 0.1272489697    dE = 0.0000234710 
+   Iter. 12 :  E[1] = 0.1272465107    dE = 0.0000024590 
+   Iter. 13 :  E[1] = 0.1272465853    dE = 0.0000000746 
+
+ * EOM-CCSD Converged
+ - Energy for the state 1 = 0.1272465853 
+
+ * End of the program
+

@@ -66,7 +66,7 @@ def get_CIS(EnvVal,lprint):
     elif (GuessType=='CIS_FILE'):
        print(' - Reading CIS matrix from file')
        finp='CIS-Matrix' 
-       CISMat=util.read_data(finp,True)
+       CISMat=util.read_data(finp,EnvVal)
        #print('CIS Matrix')
        #print(CISMat)
        EigVal,EigVec = np.linalg.eig(CISMat)
@@ -94,7 +94,7 @@ def get_CISvec(EnvVal):
     Nroot=1
     
     finp='ACES2-CISvec' 
-    CISvec=util.read_data(finp,True)
+    CISvec=util.read_data(finp,EnvVal)
 
     print('CISvec')
     print(CISvec)
