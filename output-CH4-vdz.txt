@@ -1,0 +1,67 @@
+   ====================
+     EOM-CCSD program  
+   ====================
+
+ * Input module
+ - Input file: input-CH4-vdz.txt
+ - Input keys:
+   ---------------------------------------------
+   NIRREP               : 1                   
+   NBAS                 : 34                  
+   NOCC                 : 5                   
+   NVRT                 : 29                  
+   REF_ORB              : RHF                 
+   NMAX_ITER            : 100                 
+   NROOT                : 1                   
+   VTOL_ENG             : 1e-07               
+   NDIM_SUBSP           : 5                   
+   GUESS_TYPE           : HDIAG               
+   NDIM_GUESS           : 2                   
+   HBAR_TYPE            : FILE                
+   HBAR_DEBUG           : FALSE               
+   DATA_DIR             : Data-CH4-vdz        
+   ---------------------------------------------
+
+ * Getting Hbar from file
+
+ * Guess : diagonal approximation
+ - Size of the guess vector (Rrow,Rcol) = (21170, 2)
+   Rrow: Rov+Roovv       = 145+21025
+   Rcol: Nroot*NdimGuess = 2
+
+ * EOM-CCSD iteration, Max=100
+   Iter.  0 :  E[1] = 0.5353244005    dE = 0.5353244005 
+   Iter.  1 :  E[1] = 0.4559851821    dE = 0.0793392184 
+   Iter.  2 :  E[1] = 0.4528980866    dE = 0.0030870954 
+   Iter.  3 :  E[1] = 0.4529106009    dE = 0.0000125143 
+   Iter.  4 :  E[1] = 0.4529106009    dE = 0.0000125143 
+   Iter.  5 :  E[1] = 0.4527071825    dE = 0.0002034184 
+   Iter.  6 :  E[1] = 0.4526171964    dE = 0.0000899862 
+   Iter.  7 :  E[1] = 0.4526654788    dE = 0.0000482824 
+   Iter.  8 :  E[1] = 0.4527541726    dE = 0.0000886939 
+   Iter.  9 :  E[1] = 0.4527541726    dE = 0.0000886939 
+   Iter. 10 :  E[1] = 0.4526541956    dE = 0.0000999770 
+   Iter. 11 :  E[1] = 0.4525494961    dE = 0.0001046995 
+   Iter. 12 :  E[1] = 0.4525387329    dE = 0.0000107632 
+   Iter. 13 :  E[1] = 0.4525580463    dE = 0.0000193133 
+   Iter. 14 :  E[1] = 0.4525580463    dE = 0.0000193133 
+   Iter. 15 :  E[1] = 0.4525543992    dE = 0.0000036470 
+   Iter. 16 :  E[1] = 0.4525572455    dE = 0.0000028463 
+   Iter. 17 :  E[1] = 0.4525674955    dE = 0.0000102500 
+   Iter. 18 :  E[1] = 0.4525684475    dE = 0.0000009521 
+   Iter. 19 :  E[1] = 0.4525684475    dE = 0.0000009521 
+   Iter. 20 :  E[1] = 0.4525642767    dE = 0.0000041709 
+   Iter. 21 :  E[1] = 0.4525594241    dE = 0.0000048525 
+   Iter. 22 :  E[1] = 0.4525590596    dE = 0.0000003645 
+   Iter. 23 :  E[1] = 0.4525599653    dE = 0.0000009057 
+   Iter. 24 :  E[1] = 0.4525599653    dE = 0.0000009057 
+   Iter. 25 :  E[1] = 0.4525597397    dE = 0.0000002257 
+   Iter. 26 :  E[1] = 0.4525599614    dE = 0.0000002217 
+   Iter. 27 :  E[1] = 0.4525605843    dE = 0.0000006229 
+   Iter. 28 :  E[1] = 0.4525606002    dE = 0.0000000159 
+
+ * EOM-CCSD Converged
+ - Energy for the state 1 = 0.4525606002 
+
+ * End of the program
+

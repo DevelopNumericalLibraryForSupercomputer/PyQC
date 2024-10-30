@@ -12,7 +12,7 @@
    NOCC                 : 5                   
    NVRT                 : 8                   
    REF_ORB              : RHF                 
-   NMAXITER             : 20                  
+   NMAX_ITER            : 20                  
    NROOT                : 1                   
    VTOL_ENG             : 1e-07               
    NDIM_SUBSP           : 5                   

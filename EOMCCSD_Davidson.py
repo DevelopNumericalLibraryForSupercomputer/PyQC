@@ -10,7 +10,7 @@ def Diag_Davidson(EnvVal,F,W,T,L,R):
     Nocc=EnvVal['NOCC']
     Nvrt=EnvVal['NVRT']
     RefOrb=EnvVal['REF_ORB']
-    MaxIter=EnvVal['NMAXITER']
+    MaxIter=EnvVal['NMAX_ITER']
     Nroot=EnvVal['NROOT']  #for now, Nroot=1
     EngTol=EnvVal['VTOL_ENG']
     NDimSubSp=EnvVal['NDIM_SUBSP'] #Maximum subspace dimension

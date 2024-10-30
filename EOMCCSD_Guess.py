@@ -122,7 +122,7 @@ def driver(EnvVal,F,W):
        Hdiag=make_Hdiag(EnvVal,F)
        D1a=Hdiag[:Nov]
        idx=D1a.argsort()[::-1]  #D1a(ordered)
-       idx=idx[:Nroot*NdimGuess] #Choose the M lowest elements (M=Nroor*NdimGuess)
+       idx=idx[:Rcol] #Choose the M lowest elements (M=Nroor*NdimGuess)
 
        R = np.zeros([Rrow,Rcol])
        for i in range(Rcol):

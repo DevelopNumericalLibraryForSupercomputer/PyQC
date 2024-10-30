@@ -3,3 +3,4 @@ NVRT=9
 DATA_DIR=Data-LiH-321g
 HBAR_DEBUG=true
 #hbar_type=file
+NROOT=2
