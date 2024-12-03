@@ -93,11 +93,8 @@ def read_from_ACES2(EnvVal):
 def get_Ints(EnvVal):
     EnvVal['Hbar_SubMO']='FILE'
     util.get_SubMO('oooo',EnvVal)
-    util.compare_two_vectors(EnvVal,'Int-Goooo.txt','Int-Goooo.txt')
     util.get_SubMO('ooov',EnvVal)
-    util.compare_two_vectors(EnvVal,'Int-Gooov.txt','Int-Gooov.txt')
     util.get_SubMO('ovov',EnvVal)
-    util.compare_two_vectors(EnvVal,'Int-Govov.txt','Int-Govov.txt')
 
 
 def calc_Hbar(EnvVal):
@@ -438,10 +435,6 @@ if __name__ == '__main__' :
     util.make_header('Hbar program')
     argv = sys.argv
     EnvVal=inp.driver(argv)
-
-    EnvVal['HBAR_TYPE']='CALC'
-#   EnvVal['HBAR_TYPE']='INTS'
-#   EnvVal['HBAR_TYPE']='TEST'
 
     if  EnvVal['HBAR_TYPE']=='TEST':
         test_results(EnvVal)
