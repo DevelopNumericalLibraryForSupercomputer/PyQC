@@ -56,17 +56,9 @@ def get_CIS(EnvVal,lprint):
     GuessType=EnvVal['GUESS_TYPE']
     Nov=Nocc*Nvrt
 
-    if (GuessType=='CIS_ACES2'):
-       print(' - Reading CIS matrix from ACES2')
-       #if aces2py not in sys.modules:
-       import Base_AcesPy as ap 
-       EigVal,EigVec = ap.get_CIS_matrix(Nocc,Nvrt)
-       EigVec=EigVec.reshape(Nov,Nov)
-       Val,Vec = sort_and_get_indices(EigVal,EigVec)
-    elif (GuessType=='CIS_FILE'):
+    if (GuessType=='CIS_FILE'):
        print(' - Reading CIS matrix from file')
-       finp='CIS-Matrix' 
-       CISMat=util.read_data(finp,EnvVal)
+       CISMat=util.read_data('Data-CIS-Matrix.txt',EnvVal)
        #print('CIS Matrix')
        #print(CISMat)
        EigVal,EigVec = np.linalg.eig(CISMat)
@@ -93,8 +85,7 @@ def get_CISvec(EnvVal):
     Nov=Nocc*Nvrt
     Nroot=1
     
-    finp='ACES2-CISvec' 
-    CISvec=util.read_data(finp,EnvVal)
+    CISvec=util.read_data('Data-ACES2-CISvec.txt',EnvVal)
 
     print('CISvec')
     print(CISvec)

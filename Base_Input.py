@@ -10,12 +10,14 @@ def get_default_values():
     EnvVal['NOCC']=0
     EnvVal['NVRT']=0
     EnvVal['REF_ORB']='RHF'
-    EnvVal['NMAX_ITER']=20
+    EnvVal['NMAX_ITER']=50
     EnvVal['NROOT']=1
     EnvVal['VTOL_ENG']=1.0E-7    #Energy Tolerence
-    EnvVal['NDIM_SUBSP']=5       #Maximum subspace dimension
+    EnvVal['NDIM_SUBSP']=10      #Maximum subspace dimension
     EnvVal['GUESS_TYPE']='HDIAG' # Hdiag/CIS_FILE
-    EnvVal['NDIM_GUESS']=2
+    EnvVal['NDIM_GUESS']=1
+    EnvVal['HBAR_OUT']='FILE'
+    EnvVal['HBAR_SUBMO']='DIRECT'
     EnvVal['HBAR_TYPE']='FILE'
     EnvVal['HBAR_DEBUG']='FALSE'
     EnvVal['DATA_DIR']='NA'
@@ -36,18 +38,18 @@ def read_input_file(EnvVal,argv):
 def read_input_line(EnvVal,line):
     #print(line) 
     if (line[0]!='#'):
-       inpkey=line.split('=')[0].upper()
-       inpval=line.split('=')[1].strip()
-       #print('key='+inpkey)
-       #print('val='+inpval)
-       if inpkey=='DATA_DIR':
-          EnvVal[inpkey]=inpval
-       elif inpkey[0]=='N':
-          EnvVal[inpkey]=int(inpval)
-       elif inpkey[0]=='V':
-          EnvVal[inpkey]=float(inpval)
+       key=line.split('=')[0].upper()
+       val=line.split('=')[1].strip()
+       #print('key='+key)
+       #print('val='+val)
+       if key=='DATA_DIR':
+          EnvVal[key]=val
+       elif key[0]=='N':
+          EnvVal[key]=int(val)
+       elif key[0]=='V':
+          EnvVal[key]=float(val)
        else:
-          EnvVal[inpkey]=inpval.upper()
+          EnvVal[key]=val.upper()
     return EnvVal
 
 

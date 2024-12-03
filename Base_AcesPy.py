@@ -2,6 +2,55 @@ import sys
 import numpy as np
 import Base_Util as util
 
+def read_dgetrecpy(string,dim1):
+    import aces2py as a2
+    Vec=np.zeros([dim1]) 
+    a2.dgetrecpy(string,Vec,dim1)
+    return Vec
+
+def read_getlstpy(idx,ispin,dim1,dim2):
+    import aces2py as a2
+    Irrep=1
+    dim=dim1*dim2
+    Vec=np.zeros(dim)
+    a2.getlstpy(1,1,Irrep,ispin,idx,dim,Vec)
+    Vec=Vec.reshape(dim1,dim2)
+    return Vec
+
+def read_getallpy(idx,Dim):
+    import aces2py as a2
+    Xdim=len(Dim)
+    Irrep=1
+
+    Ndim=1
+    for i in range (Xdim):
+        Ndim=Dim[i]
+    if Ndim==0:
+       write(' * Error: in reading getallpy, idx='+str(idx)) 
+       write('          Ndim = 0')
+
+    Vec=np.zeros(Ndim)
+    a2.getallpy(Vec,Ndim,Irrep,idx)
+    if Xdim==2:
+       Vec=Vec.reshape(Dim[0],Dim[1])
+    elif Xdim==4:
+       Vec=Vec.reshape(Dim[0],Dim[1],Dim[2],Dim[3])
+
+    return Vec
+
+def read_get12ehpy(string,Nbas,Ndim):
+    import aces2py as a2
+    
+    Mat=np.zeros(Nbas**Ndim, dtype=float) 
+    if (Ndim==2):
+       a2.get1ehpy(string,Mat,Nbas) 
+       Mat=Mat.reshape(Nbas,Nbas)
+    elif (Ndim==4):
+       a2.get2ehpy(string,Mat,Nbas) 
+       Mat=Mat.reshape(Nbas,Nbas,Nbas,Nbas)
+    #print('\n * matrix('+string+')')
+    #print(Mat)
+    return Mat
 
 def read_mol_info(EnvVal):
     import aces2py as a2
@@ -9,20 +58,18 @@ def read_mol_info(EnvVal):
     Irrep=1
     Nbas = np.array([0])  # Number of basis functions
     Nocc = np.array([0])  # Number of electron pairs
-    Enuc = np.zeros([1])  # Nuclear Repulsion Energy
     charge = np.array([0])  # Charge of Species
 
     a2.igetrecpy('NBASTOT', Nbas, 1)
     a2.igetrecpy('NMPROTON', Nocc, 1)
-    a2.dgetrecpy('NUCREP', Enuc, 1)
+    Enuc=read_dgetrecpy('NUCREP',1) # Nuclear Repulsion Energy
     charge = a2.flags.iflags[27]
 
     Nbas = Nbas[0]
     print('- No. basis function = '+str(Nbas))
     Nocc = int((Nocc[0] - charge) / 2)
     print('- No, occupied orbital = '+str(Nocc))
-    Enuc = Enuc[0]
-    print('- Nuclear repulsion energy = '+str(Enuc))
+    print('- Nuclear repulsion energy = '+str(Enuc[0]))
 
     Nvrt=Nbas-Nocc
 
@@ -35,25 +82,10 @@ def read_mol_info(EnvVal):
 
 
 def read_ints(Nbas):
-    import aces2py as a2
-    Smat = np.zeros(Nbas**2, dtype=float)  # Overlap Matrix
-    a2.get1ehpy('overlap', Smat, Nbas)  # Overlap Matrix
-    Smat = Smat.reshape(Nbas,Nbas)
-    print ('\n * S matrix')
-    print (Smat)
-    #print(Smat.nbytes)
-
-    Int1 = np.zeros(Nbas**2)  # One-Electron Integrals
-    a2.get1ehpy('oneh',Int1,Nbas)  # One-Electron Integrals
-    Int1 = Int1.reshape(Nbas,Nbas)
-    print ('\n *H core matrix')
-    print (Int1)
-
-    Int2 = np.zeros(Nbas**4)  # Two-Electron Integrals
-    a2.get2ehpy('2elints',Int2,Nbas)  # Two-Electron Integrals
-    Int2 = Int2.reshape(Nbas,Nbas,Nbas,Nbas)
-#   print ('H rep matrix')
-#   print (Int2)
+     
+    Smat = read_get12ehpy('overlap',Nbas,2)  # overlap Matrix
+    Int1 = read_get12ehpy('oneh',Nbas,2)     # H core Matrix
+    Int2 = read_get12ehpy('2elints',Nbas,4)  # 2e integral 
 
 #   Int2 = Int2.swapaxes(2, 3)
 #   Jmat = Int2.reshape(Nbas**2,Nbas**2)
@@ -62,16 +94,21 @@ def read_ints(Nbas):
     Kmat = Int2.swapaxes(1, 2)  
     Kmat = Kmat.reshape(Nbas**2,Nbas**2)
 
-    # np.savetxt('Int1.csv', Int1, delimiter=',')
-    # np.savetxt('Int2.csv', Int2, delimiter=',')
-    # np.savetxt('Jmat.csv', Jmat, delimiter=',')
-    # np.savetxt('Kmat.csv', Kmat, delimiter=',')
-
     return Smat,Int1,Jmat,Kmat
 
+def write_aces2_ints_file():
+    import aces2py as a2
+    f=a2.init()
+    a2.run('ints')
+    #a2.run('scf')
+    #a2.run('1props')
+    #a2.run('cc')
+    #a2.run('ee')
+    #a2.run('hbar')
 
+    return
 
-def get_Vec2D(Nocc,Nvrt,String,lprint):
+def get_Vec2D(Nocc,Nvrt,String,EnvVal,lprint):
     import aces2py as a2
     # See checkhbar.F
     Irrep=1
@@ -110,13 +147,13 @@ def get_Vec2D(Nocc,Nvrt,String,lprint):
        print(dim)
        print(Mat)
 
-    lwrite=True
-    util.write_data(String,Mat,dim,lwrite)
+    String=String+'.txt'
+    util.write_data(String,Mat,EnvVal)
 
     return Mat
 
 
-def get_Vec4D(Nocc,Nvrt,String,lprint):
+def get_Vec4D(Nocc,Nvrt,String,EnvVal,lprint):
     import aces2py as a2
     # See checkhbar.F
     Irrep=1
@@ -195,8 +232,8 @@ def get_Vec4D(Nocc,Nvrt,String,lprint):
        print(dim)
        #print(Mat)
 
-    lwrite=True
-    util.write_data(String,Mat,dim,lwrite)
+    String=String+'.txt'
+    util.write_data(String,Mat,EnvVal)
 
     return Mat
 
@@ -245,130 +282,8 @@ def get_CIS_vector(Nocc,Nvrt):
     import aces2py as a2
     Irrep=1
     Nov=Nocc*Nvrt
-    Ndim=Nov*Nov
-    dim=[Nov,Nov]
-    Mat=np.zeros(Ndim)
-    a2.getlstpy(1,1,Irrep,1,94,Ndim,Mat)
-    Mat=Mat.reshape(dim[0],dim[1])
-
-    lprint=True
-    String='CIS vector'
-    if (lprint):
-       print(String+', Ndim='+str(Ndim))
-       print(dim)
-       print(Mat)
-
-
-def get_CIS_matrix(Nocc,Nvrt):
-    import aces2py as a2
-    # See makess.f
-
-    lprint=False
-    Irrep=1
-
-    Nbas=Nocc+Nvrt
-    Nov=Nocc*Nvrt
-    OrbEng=np.zeros(Nbas)
-    a2.dgetrecpy('SCFEVALA',OrbEng,Nbas)
-    print(OrbEng)
-
-    if (False):
-       # True when NON-HF reference is used.
-       #Foo
-       Ndim=Nocc*Nocc
-       dim=[Nocc,Nocc]
-       Foo=np.zeros(Ndim)
-       a2.getlstpy(1,1,Irrep,1,91,Ndim,Foo)
-       Foo=Foo.reshape(dim[0],dim[1])
-       String='Foo matrix'
-       lprint=True
-       if (lprint):
-          print(String+', Ndim='+str(Ndim))
-          print(dim)
-          print(Foo)
-
-       #Fvv
-       Ndim=Nvrt*Nvrt
-       dim=[Nvrt,Nvrt]
-       Fvv=np.zeros(Ndim)
-       a2.getlstpy(1,1,Irrep,1,92,Ndim,Fvv)
-       Fvv=Fvv.reshape(dim[0],dim[1])
-       String='Fvv matrix'
-       lprint=True
-       if (lprint):
-          print(String+', Ndim='+str(Ndim))
-          print(dim)
-          print(Fvv)
-
-    #<IA||JB>
-    Ndim=Nov*Nov
-    dim=[Nov,Nov]
-    Wovov_aaaa=np.zeros(Ndim)
-    a2.getallpy(Wovov_aaaa,Ndim,Irrep,23)
-    Wovov_aaaa=Wovov_aaaa.reshape(dim[0],dim[1])
-    String='TEI matrix (aaaa)'
-    if (lprint):
-       print(String+', Ndim='+str(Ndim))
-       print(dim)
-#      print(Wovov_aaaa)
-       print(Wovov_aaaa[0,:])
-
-    #<Ab||Ij>
-    Ndim=Nov*Nov
-    dim=[Nov,Nov]
-    Wovov_abab=np.zeros(Ndim)
-    a2.getallpy(Wovov_abab,Ndim,Irrep,18)
-    Wovov_abab=Wovov_abab.reshape(dim[0],dim[1])
-    String='TEI matrix (abab)'
-    if (lprint):
-       print(String+', Ndim='+str(Ndim))
-       print(dim)
-#      print(Wovov_abab)
-       print(Wovov_abab[0,:])
-
-
-    Wovov = -Wovov_aaaa + Wovov_abab
-    String='TEI matrix (aaaa+abab)'
-    if (lprint):
-       print(String+', Ndim='+str(Ndim))
-       print(dim)
-#      print(Wovov_abab)
-       print(Wovov[0,:])
-
-    # H(ai,bj) = {F(ab)-F(ij)}d(i==j)d(a==b) - W(ai|bj)
-    Mat = -Wovov_aaaa + Wovov_abab
-    ia=0
-    for i in range(Nocc):
-        for a in range(Nvrt):
-            ia +=1
-            jb =0
-            for j in range(Nocc):
-                for b in range(Nvrt):
-                    jb +=1
-                    if (i==j and a==b):
-                       Mat[ia-1,jb-1] += OrbEng[a+Nocc]-OrbEng[i]
-
-    String='CIS matrix'
-    if (lprint):
-       print(String+', Ndim='+str(Ndim))
-       print(dim)
-       print(Mat)
-
-    lwrite=True
-    util.write_data('CIS-Matrix',Mat,dim,lwrite)
-
-    RunDiag=True
-    if (RunDiag):
-       EigVal,EigVec = np.linalg.eig(Mat)
-       util.write_data('CIS-EigVec',EigVec,dim,lwrite)
-       dim=[Nov]
-       util.write_data('CIS-EigVal',EigVal,dim,lwrite)
-       dim=[Nbas]
-       util.write_data('SCFEVALA',OrbEng,dim,lwrite)
-       print('EigVal')
-       print(EigVal)
-
-    return EigVal,EigVec
+    Mat=read_getlstpy(94,1,Nov,Nov)
+    util.print_mat2('CIS vector',Mat,Nov,Nov)
 
 
 

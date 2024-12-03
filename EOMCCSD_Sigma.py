@@ -11,13 +11,13 @@ import EOMCCSD_Davidson as dav
 # with the spin integration for RHF.
 
 
-def make_Sigma(EnvVal,F,W,T,L,R0):
+def make_Sigma(EnvVal,F,W,T,R0):
     Nocc=EnvVal['NOCC']
     Nvrt=EnvVal['NVRT']
 
     R=expand_Vec1D(R0,Nocc,Nvrt)
     Z1=HR_Z1(EnvVal,F,W,R)
-    Z2=HR_Z2(EnvVal,F,W,T,L,R)
+    Z2=HR_Z2(EnvVal,F,W,T,R)
     Z=np.concatenate((Z1,Z2),axis=0)
     return Z
 
@@ -59,7 +59,7 @@ def HR_Z1(EnvVal,F,W,R):
     Z1=Z1a.flatten()
     return Z1
 
-def HR_Z2(EnvVal,F,W,T,L,R):
+def HR_Z2(EnvVal,F,W,T,R):
     Nocc=EnvVal['NOCC']
     Nvrt=EnvVal['NVRT']
     Nov=Nocc*Nvrt
@@ -78,7 +78,7 @@ def HR_Z2(EnvVal,F,W,T,L,R):
     Wovvo=W['ovvo'] 
     Wvvvv=W['vvvv'] 
     Wvvvo=W['vvvo'] 
-    Loovv=L['oovv'] 
+    Woovv=W['oovv'] 
 
     ## Hds (wo/three-body terms)
     ## (DT1INT2A/DT1INT2B in ACES2)
@@ -113,11 +113,11 @@ def HR_Z2(EnvVal,F,W,T,L,R):
     ## Hdd (Three body terms) 
     ## (FORMQ1/GFORMG2 in ACES2)
     Yvv   = 0.0
-    Yvv  -= np.einsum("nmfe,nmae->af", Loovv, R2ab)    
+    Yvv  -= np.einsum("nmfe,nmae->af", Woovv, R2ab)    
     Z2ab += np.einsum("af,ijfb->ijab", Yvv,   T2ab)    
 
     Yoo   = 0.0
-    Yoo  -= np.einsum("nmfe,imfe->ni", Loovv, R2ab)
+    Yoo  -= np.einsum("nmfe,imfe->ni", Woovv, R2ab)
     Z2ab += np.einsum("ni,njab->ijab", Yoo,   T2ab)   
 
 #   util.check_sum('Z2 - final',Z2ab,4)

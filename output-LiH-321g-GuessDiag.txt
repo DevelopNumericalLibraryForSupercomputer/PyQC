@@ -12,11 +12,14 @@
    NOCC                 : 2                   
    NVRT                 : 9                   
    REF_ORB              : RHF                 
-   NMAX_ITER            : 20                  
+   NMAX_ITER            : 50                  
    NROOT                : 1                   
    VTOL_ENG             : 1e-07               
-   NDIM_SUBSP           : 5                   
+   NDIM_SUBSP           : 10                  
    GUESS_TYPE           : HDIAG               
+   NDIM_GUESS           : 1                   
+   HBAR_OUT             : FILE                
+   HBAR_SUBMO           : DIRECT              
    HBAR_TYPE            : FILE                
    HBAR_DEBUG           : TRUE                
    DATA_DIR             : Data-LiH-321g       
@@ -25,29 +28,29 @@
  * Getting Hbar from file
 
  * Guess : diagonal approximation
- - Size of the guess vector (Rov+Roovv) = (342, 2)
-   Rov+Roovv      = 18+324
-   Nroot*NGuessSp = 2
+ - Size of the guess vector (Rrow,Rcol) = (342, 1)
+   Rrow: Rov+Roovv       = 18+324
+   Rcol: Nroot*NdimGuess = 1
 
- * EOM-CCSD iteration, Max=20
+ * Solving root = 1
+
+ * EOM-CCSD iteration, Max=50
    Iter.  0 :  E[1] = 0.1929814788    dE = 0.1929814788 
    Iter.  1 :  E[1] = 0.1370578983    dE = 0.0559235805 
    Iter.  2 :  E[1] = 0.1308460324    dE = 0.0062118659 
    Iter.  3 :  E[1] = 0.1284882632    dE = 0.0023577692 
-   Iter.  4 :  E[1] = 0.1284882632    dE = 0.0023577692 
-   Iter.  5 :  E[1] = 0.1277610637    dE = 0.0007271994 
-   Iter.  6 :  E[1] = 0.1271759313    dE = 0.0005851324 
-   Iter.  7 :  E[1] = 0.1270261500    dE = 0.0001497813 
-   Iter.  8 :  E[1] = 0.1271929822    dE = 0.0001668321 
-   Iter.  9 :  E[1] = 0.1271929822    dE = 0.0001668321 
-   Iter. 10 :  E[1] = 0.1272300179    dE = 0.0000370357 
-   Iter. 11 :  E[1] = 0.1272561218    dE = 0.0000261039 
-   Iter. 12 :  E[1] = 0.1272487537    dE = 0.0000073681 
-   Iter. 13 :  E[1] = 0.1272475770    dE = 0.0000011767 
-   Iter. 14 :  E[1] = 0.1272475770    dE = 0.0000011767 
-   Iter. 15 :  E[1] = 0.1272476512    dE = 0.0000000742 
+   Iter.  4 :  E[1] = 0.1276098866    dE = 0.0008783766 
+   Iter.  5 :  E[1] = 0.1272827617    dE = 0.0003271248 
+   Iter.  6 :  E[1] = 0.1272298727    dE = 0.0000528890 
+   Iter.  7 :  E[1] = 0.1272324871    dE = 0.0000026144 
+   Iter.  8 :  E[1] = 0.1272461719    dE = 0.0000136848 
+   Iter.  9 :  E[1] = 0.1272481146    dE = 0.0000019428 
+   Iter. 10 :  E[1] = 0.1272481146    dE = 0.0000019428 
+   Iter. 11 :  E[1] = 0.1272472571    dE = 0.0000008576 
+   Iter. 12 :  E[1] = 0.1272468090    dE = 0.0000004480 
+   Iter. 13 :  E[1] = 0.1272467993    dE = 0.0000000098 
 
  * EOM-CCSD Converged
- - Energy for the state 1 = 0.1272476512 
+ - Energy for the state 1 = 0.1272467993  (3.46255 eV)
 
  * End of the program
